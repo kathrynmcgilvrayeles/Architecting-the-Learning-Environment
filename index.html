@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructional Design Toolkit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-primary: #1f2a52; /* Dark Blue */
+            --brand-accent: #00bec7;  /* Teal */
+            --brand-light: #d2f0f0;   /* Light Cyan */
+            --brand-neutral: #abb5bf; /* Gray Blue */
+            --bg-page: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--brand-primary);
+            overflow: hidden; /* App-like feel, no main body scrolling */
+        }
+
+        /* Custom Colors & Utilities */
+        .text-primary { color: var(--brand-primary); }
+        .bg-primary { background-color: var(--brand-primary); }
+        .text-accent { color: var(--brand-accent); }
+        .bg-accent { background-color: var(--brand-accent); }
+        .bg-light { background-color: var(--brand-light); }
+        .border-accent { border-color: var(--brand-accent); }
+        .border-neutral { border-color: var(--brand-neutral); }
+        .text-neutral-dark { color: #4b5563; }
+
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Animations */
+        .modal-active {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+        .modal-active .modal-content {
+            transform: scale(1) translateY(0) !important;
+        }
+
+        .nav-tab {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .nav-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: transparent;
+            transition: background-color 0.2s ease;
+        }
+        .nav-tab.active {
+            color: var(--brand-primary);
+            font-weight: 600;
+        }
+        .nav-tab.active::after {
+            background-color: var(--brand-accent);
+        }
+        .nav-tab:hover:not(.active) {
+            color: var(--brand-accent);
+        }
+
+        .sub-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .sub-tab.active {
+            background-color: var(--brand-primary);
+            color: white;
+        }
+        .sub-tab:not(.active) {
+            background-color: white;
+            color: var(--brand-primary);
+            border: 1px solid var(--brand-neutral);
+        }
+        .sub-tab:not(.active):hover {
+            border-color: var(--brand-accent);
+            color: var(--brand-accent);
+        }
+
+        .custom-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: var(--brand-neutral) transparent;
+        }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--brand-neutral); border-radius: 3px; }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .accordion-button.active .arrow, .ecosystem-btn.active .arrow {
+            transform: rotate(180deg);
+        }
+        .accordion-button.active {
+            background-color: var(--bg-page);
+        }
+        .ecosystem-btn.active {
+            background-color: var(--brand-light);
+        }
+
+        .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 9999px; /* Pill shape */
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--brand-primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-align: left;
+        }
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            border-color: var(--brand-accent);
+            color: var(--brand-accent);
+        }
+        .tool-btn.ai-tool {
+            background: linear-gradient(to right, #ffffff, #f0fdfd);
+            border-color: var(--brand-accent);
+        }
+        .tool-btn.ai-tool:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 190, 199, 0.2);
+            background: linear-gradient(to right, #f0fdfd, #e0fafa);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col antialiased relative">
+
+    <header class="bg-white border-b border-gray-200 flex-none z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="py-5 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-primary tracking-tight">Instructional Design Toolkit</h1>
+                    <p class="text-sm text-neutral-dark mt-1 font-medium">Architecting environments for behavioural execution.</p>
+                </div>
+            </div>
+            
+            <nav class="flex overflow-x-auto space-x-8 border-b border-transparent">
+                <button onclick="switchTab('tab-intent')" id="btn-intent" class="nav-tab active whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
+                    1. Strategic Intent
+                </button>
+                <button onclick="switchTab('tab-tools')" id="btn-tools" class="nav-tab whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
+                    2. The Toolkit
+                </button>
+                <button onclick="switchTab('tab-architect')" id="btn-architect" class="nav-tab whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
+                    3. Architecting the Environment
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-hidden relative">
+        <div class="absolute inset-0 overflow-y-auto custom-scroll p-4 sm:p-6 lg:p-8">
+            <div class="max-w-7xl mx-auto h-full">
+
+                <section id="tab-intent" class="tab-pane fade-in block h-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+                        
+                        <!-- Execution Mindset Block -->
+                        <div class="bg-primary text-white rounded-2xl p-8 shadow-lg flex flex-col">
+                            <h2 class="text-2xl font-bold mb-4 text-accent">The Execution Mindset</h2>
+                            <p class="text-lg font-medium mb-6">Stop designing for understanding. Start designing for execution.</p>
+                            
+                            <div class="space-y-6 text-sm text-gray-200 flex-1 flex flex-col justify-center">
+                                <p class="leading-relaxed">
+                                    Knowledge and understanding remain critical foundations of any learning experience, but they are the starting line, not the finish line. We must deeply understand the specific skill being built and actively design to build the learner's confidence to apply it after completing the learning.
+                                </p>
+                                <p class="text-white font-semibold leading-relaxed bg-white/10 p-4 rounded-xl border border-white/20 shadow-sm">
+                                    The true measure of our instructional design is not the final quiz score—it is whether the learner has the competence and self-assurance to execute the skills and behaviours required for the job.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 overflow-y-auto custom-scroll">
+                            <h3 class="text-xl font-bold text-primary mb-6">Mapping the Execution Ecosystem</h3>
+                            <div class="space-y-3" id="ecosystem-accordion">
+                                
+                                <!-- Step 1 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
+                                        <div class="flex items-center">
+                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">1</span>
+                                            Target Behaviour
+                                        </div>
+                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div class="accordion-content bg-white">
+                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
+                                            <p>What specific behaviour are we wanting to change and see? Are we looking at a skills or cultural shift? This focuses squarely on the observable actions we need.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
+                                        <div class="flex items-center">
+                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">2</span>
+                                            System & Workflow Constraints
+                                        </div>
+                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div class="accordion-content bg-white">
+                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
+                                            <p>Does the actual work environment permit this behaviour? If the software is slow, the process is broken, or the physical tools are missing, the training will fail regardless of quality.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
+                                        <div class="flex items-center">
+                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">3</span>
+                                            Performance Support
+                                        </div>
+                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div class="accordion-content bg-white">
+                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
+                                            <p>Do they need to memorize this, or can we provide a tool? Design job aids, checklists, and search-driven resources to support execution exactly when it is needed.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
+                                        <div class="flex items-center">
+                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">4</span>
+                                            Social & Leadership Dynamics
+                                        </div>
+                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div class="accordion-content bg-white">
+                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
+                                            <p>Will their manager support this new behaviour? Will their peers ridicule them for doing it differently? Social proof and leader modelling are often stronger than any formal training module.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 5 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
+                                        <div class="flex items-center">
+                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">5</span>
+                                            Data & Feedback Loops
+                                        </div>
+                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div class="accordion-content bg-white">
+                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
+                                            <p>How will the learner know they are executing correctly? Design mechanisms for immediate feedback, whether through system data, peer review, or coaching.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="tab-tools" class="tab-pane fade-in hidden h-full">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-primary">The Execution Toolkit</h2>
+                        <p class="text-gray-600 mt-1">Select a modality below to explore how it drives skills and behaviour.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        
+                        <!-- Flexible & Blended -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
+                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                </div>
+                                <h3 class="text-lg font-bold text-primary">Flexible & Blended</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button class="tool-btn" onclick="openModal('elearning')">eLearning Modules</button>
+                                <button class="tool-btn" onclick="openModal('microlearning')">Microlearning</button>
+                                <button class="tool-btn" onclick="openModal('standardvideos')">Videos</button>
+                                <button class="tool-btn" onclick="openModal('videos')">Interactive Videos</button>
+                                <button class="tool-btn" onclick="openModal('webinars')">Webinars</button>
+                                <button class="tool-btn" onclick="openModal('podcasts')">Audio Overviews / Podcasts</button>
+                                <button class="tool-btn" onclick="openModal('jobaids')">Digital Job Aids</button>
+                                <button class="tool-btn" onclick="openModal('qrg')">Quick Reference Guides</button>
+                                <button class="tool-btn" onclick="openModal('mobile')">Mobile Apps</button>
+                                <button class="tool-btn" onclick="openModal('vilt')">Virtual Classrooms</button>
+                                <button class="tool-btn" onclick="openModal('journeys')">Learning Journeys</button>
+                                <button class="tool-btn" onclick="openModal('live')">Live Learning</button>
+                                <button class="tool-btn" onclick="openModal('gamified')">Gamified Learning</button>
+                                <button class="tool-btn" onclick="openModal('adaptive')">Adaptive Pathways</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
+                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
+                                <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <h3 class="text-lg font-bold text-primary">Experiential & Applied</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button class="tool-btn" onclick="openModal('scenarios')">Scenario-Based Learning</button>
+                                <button class="tool-btn" onclick="openModal('branching')">Branching Simulations</button>
+                                <button class="tool-btn" onclick="openModal('vr')">AR/VR Simulations</button>
+                                <button class="tool-btn" onclick="openModal('roleplay')">Live Roleplays</button>
+                                <button class="tool-btn" onclick="openModal('ojt')">On-the-job Training</button>
+                                <button class="tool-btn" onclick="openModal('hackathons')">Hackathons</button>
+                                <button class="tool-btn" onclick="openModal('action')">Action Learning</button>
+                                <button class="tool-btn" onclick="openModal('labs')">Practice Labs</button>
+                                <button class="tool-btn" onclick="openModal('sandbox')">Sandbox</button>
+                                <button class="tool-btn" onclick="openModal('bootcamps')">Tech Boot Camps</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
+                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
+                                <div class="w-10 h-10 rounded-lg bg-teal-50 text-accent flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <h3 class="text-lg font-bold text-primary">AI Environmental learning</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button class="tool-btn ai-tool" onclick="openModal('aibots')">AI Roleplay Bots</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('aiconvo')">AI Conversation Simulations</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('copilots')">Performance Copilots</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('aicoach')">AI Coaching</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('gensearch')">Generative Search</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('groupagents')">Group Learning Agents</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('studymode')">Study Guides / Mode</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('personalisation')">Personalisation Agents</button>
+                                <button class="tool-btn ai-tool" onclick="openModal('socratic')">Socratic Thought Partner</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
+                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
+                                <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                </div>
+                                <h3 class="text-lg font-bold text-primary">Social & Collaborative</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button class="tool-btn" onclick="openModal('cop')">Communities of Practice</button>
+                                <button class="tool-btn" onclick="openModal('mentoring')">Role/Peer Mentoring</button>
+                                <button class="tool-btn" onclick="openModal('coaching')">Coaching</button>
+                                <button class="tool-btn" onclick="openModal('cohorts')">Cohort-Based Learning</button>
+                                <button class="tool-btn" onclick="openModal('forums')">Social Forums</button>
+                                <button class="tool-btn" onclick="openModal('champions')">Champion Networks</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="tab-architect" class="tab-pane fade-in hidden h-full flex flex-col">
+                    
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-200 pb-4">
+                        <h2 class="text-2xl font-bold text-primary">Architecting the Environment</h2>
+                        <div class="flex space-x-2 mt-4 sm:mt-0 bg-gray-100 p-1 rounded-full">
+                            <button onclick="switchSubTab('sub-spaces')" id="btn-spaces" class="sub-tab active">7 Spaces for Learning</button>
+                            <button onclick="switchSubTab('sub-structures')" id="btn-structures" class="sub-tab">Structural Spaces</button>
+                        </div>
+                    </div>
+
+                    <div id="sub-spaces" class="sub-pane flex-1 overflow-y-auto custom-scroll pr-2">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
+                            <div id="spaces-accordion" class="flex flex-col divide-y divide-gray-100">
+                                <!-- JS will populate accordion here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sub-structures" class="sub-pane hidden flex-1 overflow-y-auto custom-scroll pr-2">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-primary mb-2">Hackathons</h3>
+                                <p class="text-sm text-gray-600">Intensive, time-boxed collaborative events. They force teams to apply skills under pressure to solve real business problems, rapidly accelerating competence and teamwork.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-primary mb-2">Communities of Practice</h3>
+                                <p class="text-sm text-gray-600">Sustained, structured groups of practitioners who share a passion for a specific discipline. They learn how to execute better by sharing real-world challenges and solutions.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-primary mb-2">Champion Networks</h3>
+                                <p class="text-sm text-gray-600">Activating peer influencers to model the target behaviour. Social proof travels faster than formal training. Champions make the new behaviour safe, trusted, and normal.</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-primary mb-2">Workflow Integration</h3>
+                                <p class="text-sm text-gray-600">Embedding tools, job aids, and micro-learnings directly into the systems where the work happens (e.g., Salesforce, Teams), ensuring support is available at the exact point of execution.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="tool-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]" id="tool-modal-content">
+            <div class="p-6 overflow-y-auto custom-scroll">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modal-title" class="text-2xl font-bold text-primary pr-4">Tool Title</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="w-12 h-1 bg-accent mb-4 rounded-full"></div>
+                <p id="modal-desc" class="text-gray-600 text-[15px] leading-relaxed mb-6">Description goes here.</p>
+                <div class="flex justify-end pt-4 border-t border-gray-100">
+                    <button onclick="closeModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active', 'text-primary'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.add('text-gray-500'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId.replace('tab-', ''));
+            activeBtn.classList.add('active', 'text-primary');
+            activeBtn.classList.remove('text-gray-500');
+        }
+
+        function switchSubTab(subId) {
+            document.querySelectorAll('.sub-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(subId).classList.remove('hidden');
+            document.getElementById('btn-' + subId.replace('sub-', '')).classList.add('active');
+        }
+
+        // Accordion Data for 7 Spaces
+        const spacesData = [
+            { 
+                title: "1. Secret Spaces", 
+                description: "These are private, individualised spaces where learning is self-directed and often done alone. It's ideal for foundational knowledge, reflection, and confidential practice.",
+                examples: [
+                    "An employee uses an <strong>AI Coach</strong> to practise responses for a performance review.",
+                    "A new hire completes a self-paced <strong>online course</strong> on company policies.",
+                    "A professional listens to an industry analysis <strong>podcast</strong> during their commute."
+                ],
+                question: "How can we better support and provide resources for 'secret space' learning without being intrusive?"
+            },
+            { 
+                title: "2. Group Spaces", 
+                description: "Collaborative environments where learners construct knowledge together. This is the 'we' space for teamwork, discussion, and social learning.",
+                examples: [
+                    "A team uses a <strong>Socratic Thought Partner</strong> in a webinar breakout room to deepen their analysis.",
+                    "A cohort participates in a face-to-face workshop to solve a complex case study.",
+                    "Colleagues receive <strong>just-in-time feedback</strong> from an AI on a shared project proposal."
+                ],
+                question: "What is one 'group space' activity we could enhance with a collaborative digital tool?"
+            },
+            { 
+                title: "3. Publishing Spaces", 
+                description: "Spaces where learners create and share content. This act of creation solidifies understanding and contributes to a shared knowledge base.",
+                examples: [
+                    "A manager writes a reflective blog post on leadership using an <strong>integrated AI writing assistant</strong>.",
+                    "As an assessment, a team must create and share a 'how-to' <strong>video</strong> on a new software process.",
+                    "An employee uses an <strong>AI partner</strong> to help script and produce an audio summary of their key project learnings."
+                ],
+                question: "What opportunities exist for our teams to 'publish' their learnings, and what platforms could we use?"
+            },
+            { 
+                title: "4. Performing Spaces", 
+                description: "Environments where learners actively demonstrate skills and apply knowledge in a practical, observable way.",
+                examples: [
+                    "A team member enters an <strong>AI role-play</strong> simulation to handle a difficult negotiation.",
+                    "Staff use a <strong>gamified learning</strong> platform to compete in identifying simulated security threats.",
+                    "A team leader practises a difficult conversation in a safe, immersive <strong>VR environment</strong>."
+                ],
+                question: "Beyond role-playing, what are some low-cost ways we can create 'performing spaces' for our employees to practise critical skills?"
+            },
+            { 
+                title: "5. Participation Spaces", 
+                description: "These are live, synchronous events where the primary mode of learning is active involvement and contribution.",
+                examples: [
+                    "Staff contribute ideas and vote in live polls during an all-hands <strong>webinar</strong>.",
+                    "Employees engage in a Q&A session with senior leaders during a weekly stand-up meeting.",
+                    "L&D uses <strong>smart moderation tools</strong> to seamlessly manage a large, interactive virtual conference."
+                ],
+                question: "How can we increase meaningful 'participation' in our live events beyond simple Q&A?"
+            },
+            { 
+                title: "6. Data Spaces", 
+                description: "Spaces focused on the interpretation and analysis of information. Here, learning comes from finding insights and making sense of data.",
+                examples: [
+                    "An analyst team uses <strong>predictive analysis tools</strong> to forecast market trends based on a large dataset.",
+                    "A specialist uses an <strong>AI data coach</strong> to help visualise engagement metrics.",
+                    "Learners are tasked with reviewing team performance dashboards to identify opportunities for improvement."
+                ],
+                question: "What organisational data could we safely turn into a learning activity to improve business acumen?"
+            },
+            { 
+                title: "7. Watching Spaces", 
+                description: "Environments for passive consumption of content. While passive, this is a crucial space for information dissemination and initial exposure to new topics.",
+                examples: [
+                    "A new hire <strong>watches</strong> a pre-recorded welcome video from the CEO as part of their onboarding.",
+                    "An employee <strong>watches</strong> a recording of a webinar they missed.",
+                    "After watching a long video, a learner uses <strong>Study Mode</strong> to get an automated summary of key points."
+                ],
+                question: "How can we make content in our 'watching spaces' more engaging and link it to active learning tasks?"
+            }
+        ];
+
+        // Populate 7 Spaces Accordion
+        const accordionContainer = document.getElementById('spaces-accordion');
+        spacesData.forEach((space, index) => {
+            const item = document.createElement('div');
+            
+            const button = document.createElement('button');
+            button.className = 'accordion-button w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none';
+            button.setAttribute('aria-expanded', 'false');
+            button.innerHTML = `
+                <span>${space.title}</span>
+                <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            `;
+
+            const content = document.createElement('div');
+            content.className = 'accordion-content bg-white';
+            
+            const examplesList = space.examples.map(ex => `<li class="flex items-start text-gray-600"><span class="text-accent mr-2 mt-0.5">•</span><span>${ex}</span></li>`).join('');
+
+            content.innerHTML = `
+                <div class="p-4 pt-0 text-sm border-t border-gray-100 mt-2">
+                    <p class="text-gray-600 mb-4 leading-relaxed">${space.description}</p>
+                    <div class="mb-5">
+                        <h4 class="font-bold text-primary mb-2">Practical Examples:</h4>
+                        <ul class="space-y-2 ml-1">
+                            ${examplesList}
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <span class="font-bold text-primary block mb-1">Discussion Question:</span>
+                        <p class="text-gray-600 italic">"${space.question}"</p>
+                    </div>
+                </div>
+            `;
+
+            item.appendChild(button);
+            item.appendChild(content);
+            accordionContainer.appendChild(item);
+
+            // Click interaction
+            button.addEventListener('click', () => {
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                
+                // Close others
+                document.querySelectorAll('.accordion-button').forEach(btn => {
+                    if (btn !== button) {
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.classList.remove('active');
+                        btn.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+
+                if (isExpanded) {
+                    button.setAttribute('aria-expanded', 'false');
+                    button.classList.remove('active');
+                    content.style.maxHeight = null;
+                } else {
+                    button.setAttribute('aria-expanded', 'true');
+                    button.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+            
+            if(index === 0) button.click();
+        });
+
+        // Initialize Ecosystem Accordion
+        const ecosystemBtns = document.querySelectorAll('.ecosystem-btn');
+        ecosystemBtns.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                
+                ecosystemBtns.forEach(btn => {
+                    if (btn !== button) {
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.classList.remove('active');
+                        btn.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+
+                if (isExpanded) {
+                    button.setAttribute('aria-expanded', 'false');
+                    button.classList.remove('active');
+                    content.style.maxHeight = null;
+                } else {
+                    button.setAttribute('aria-expanded', 'true');
+                    button.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+            
+            if(index === 0) button.click();
+        });
+
+        const toolData = {
+            'elearning': { title: 'eLearning Modules', desc: 'Interactive, self-paced digital courses. Best used to build foundational knowledge safely and consistently before moving to real-world application.' },
+            'microlearning': { title: 'Microlearning', desc: 'Bite-sized, hyper-focused content designed to be consumed in the flow of work. Perfect for immediate application and reinforcing specific behaviours.' },
+            'standardvideos': { title: 'Videos', desc: 'Short, engaging visual content. Excellent for demonstrating practical steps, sharing leadership narratives, or quickly explaining complex concepts.' },
+            'videos': { title: 'Interactive Videos', desc: 'Video content with embedded decision points. Allows learners to observe a behaviour and make choices, bridging the gap between passive viewing and active execution.' },
+            'webinars': { title: 'Webinars', desc: 'Live or recorded online presentations. Highly effective for scaling knowledge, launching new initiatives, or broad capability building across large, dispersed audiences.' },
+            'podcasts': { title: 'Audio Overviews / Podcasts', desc: 'Audio-based learning ideal for storytelling, leadership perspectives, and exploring the "why" behind a cultural shift, accessible during downtime or commutes.' },
+            'jobaids': { title: 'Digital Job Aids', desc: 'Checklists, quick-reference guides, and diagrams accessible at the point of need. Reduces cognitive load so the brain can focus entirely on execution.' },
+            'qrg': { title: 'Quick Reference Guides', desc: 'Concise, step-by-step documentation designed for immediate use on the job. They eliminate the need to memorise complex processes, reducing errors during execution.' },
+            'mobile': { title: 'Mobile Apps', desc: 'Learning delivered directly to a smartphone. Crucial for deskless workers who need performance support and skill reinforcement in the field.' },
+            'vilt': { title: 'Virtual Classrooms', desc: 'Live, instructor-led sessions conducted online. Highly effective when used for group discussion, guided practice, and clarifying complex execution steps.' },
+            'journeys': { title: 'Learning Journeys', desc: 'Structured, multi-modal paths delivered over time. They weave together content, practice, and social elements to sustainably build complex capabilities.' },
+            'live': { title: 'Live Learning', desc: 'Synchronous events—whether virtual or physical—designed for high interactivity, immediate Q&A, and real-time social connection among peers.' },
+            'gamified': { title: 'Gamified Learning', desc: 'Applying game mechanics like points, levels, and badges to learning experiences. Drives engagement and repeat practice by making behavioural execution rewarding.' },
+            'adaptive': { title: 'Adaptive Pathways', desc: 'Algorithms that adjust the learning journey based on performance. Ensures learners spend time executing where they are weak, not reviewing what they already know.' },
+            
+            'scenarios': { title: 'Scenario-Based Learning', desc: 'Places the learner in a realistic context to solve a problem. It forces the application of knowledge, allowing learners to practise making decisions safely.' },
+            'branching': { title: 'Branching Simulations', desc: 'Complex scenarios where decisions impact the outcome. Builds critical thinking by letting learners experience the consequences of poor execution.' },
+            'vr': { title: 'AR/VR Simulations', desc: 'Immersive spatial learning. Builds profound muscle memory and situational awareness without the risk or cost of real-world failure.' },
+            'roleplay': { title: 'Live Roleplays', desc: 'Practising conversational or physical skills with peers or actors. Excellent for building confidence in communication, sales, or de-escalation behaviours.' },
+            'ojt': { title: 'On-the-job Training', desc: 'Learning while doing the actual work under supervision. The ultimate execution environment, providing immediate, contextual feedback.' },
+            'hackathons': { title: 'Hackathons', desc: 'Intensive, time-boxed collaborative events. They force teams to apply skills under pressure to solve real business problems, rapidly accelerating competence.' },
+            'action': { title: 'Action Learning', desc: 'Small groups working on real, complex problems, taking action, and learning as individuals and as a team. deeply embeds strategic execution.' },
+            'labs': { title: 'Practice Labs', desc: 'Dedicated environments where learners can experiment, break things, and practice skills safely before applying them in live production or real-world scenarios.' },
+            'sandbox': { title: 'Sandbox', desc: 'Isolated testing environments containing dummy data. Crucial for software or systems training, allowing learners to build confidence through trial and error.' },
+            'bootcamps': { title: 'Tech Boot Camps', desc: 'Intensive, accelerated training programmes focused on rapid skill acquisition, typically blending deep technical instruction with immediate, hands-on projects.' },
+            
+            'aibots': { title: 'AI Roleplay Bots', desc: 'Practise difficult conversations with an AI avatar. Provides a psychologically safe environment to rehearse human skills and receive instant, objective feedback.' },
+            'aiconvo': { title: 'AI Conversation Simulations', desc: 'Dynamic, voice or text-driven scenarios where learners interact with AI to practice coaching, sales, or de-escalation, receiving instant behavioural feedback.' },
+            'copilots': { title: 'Performance Copilots', desc: 'AI assistants integrated into the workflow. They provide contextual guidance and answers in real-time, practically eliminating the need to memorise processes.' },
+            'aicoach': { title: 'AI Coaching', desc: 'Personalised, ongoing feedback generated by AI based on a learner\'s performance data. Drives continuous behavioural refinement.' },
+            'gensearch': { title: 'Generative Search', desc: 'AI-powered enterprise search that synthesises answers from company documentation. Empowers learners to find exact execution steps instantly.' },
+            'groupagents': { title: 'Group Learning Agents', desc: 'AI facilitators integrated into cohort chats or forums. They prompt discussion, summarise insights, and gently challenge the group\'s thinking.' },
+            'studymode': { title: 'Study Guides / Mode', desc: 'AI-generated summaries, flashcards, and interactive knowledge checks. Helps learners rapidly digest complex information and prepare their minds for practical application.' },
+            'personalisation': { title: 'Personalisation Agents', desc: 'AI assistants that analyse a learner\'s role, experience, and performance to dynamically curate content, ensuring the learning experience is hyper-relevant.' },
+            'socratic': { title: 'Socratic Thought Partner', desc: 'An AI trained to ask probing questions rather than just providing answers. Forces the learner to critically evaluate their own reasoning and problem-solving strategies.' },
+
+            'cop': { title: 'Communities of Practice', desc: 'Sustained groups of practitioners sharing challenges and solutions. They learn how to execute better through peer-to-peer social learning.' },
+            'mentoring': { title: 'Role/Peer Mentoring', desc: 'Pairing experienced executors with novices. Leverages trust and relational learning to transfer nuanced, unwritten skills and cultural norms.' },
+            'coaching': { title: 'Coaching', desc: 'One-on-one or small group guidance focused on unlocking potential and improving performance through targeted feedback, reflection, and accountability.' },
+            'cohorts': { title: 'Cohort-Based Learning', desc: 'Groups moving through a programme together. Creates powerful social accountability and peer modelling, ensuring higher completion and application rates.' },
+            'forums': { title: 'Social Forums', desc: 'Digital spaces for asynchronous discussion. Allows for the crowdsourcing of solutions and the normalisation of new behaviours across dispersed teams.' },
+            'champions': { title: 'Champion Networks', desc: 'Activating peer influencers to model the target behaviour. Champions make the new behaviour safe, trusted, and normal across the organisation.' }
+        };
+
+        // Modal Logic
+        const modal = document.getElementById('tool-modal');
+        const modalContent = document.getElementById('tool-modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+
+        function openModal(toolId) {
+            const tool = toolData[toolId];
+            if(tool) {
+                modalTitle.textContent = tool.title;
+                modalDesc.textContent = tool.desc;
+                
+                // Show modal
+                modal.classList.remove('hidden');
+                // Trigger animation next frame
+                requestAnimationFrame(() => {
+                    modal.classList.add('modal-active');
+                });
+            }
+        }
+
+        function closeModal() {
+            modal.classList.remove('modal-active');
+            // Wait for transition before hiding
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
