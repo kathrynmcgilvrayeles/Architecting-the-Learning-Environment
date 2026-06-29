@@ -1,736 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instructional Design Toolkit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --brand-primary: #1f2a52; /* Dark Blue */
-            --brand-accent: #00bec7;  /* Teal */
-            --brand-light: #d2f0f0;   /* Light Cyan */
-            --brand-neutral: #abb5bf; /* Gray Blue */
-            --bg-page: #f8fafc;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecting your learning environment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1f2a52;
+  --navy-700:#2c3a6b;
+  --teal:#00bec7;
+  --teal-deep:#1f2a52;
+  --aqua:#d2f0f0;
+  --aqua-soft:#eaf7f7;
+  --slate:#abb5bf;
+  --ink:#15203f;
+  --paper:#f6f8fa;
+  --paper-2:#eef2f5;
+  --white:#ffffff;
+  --line:#dfe5ea;
+  --shadow:0 1px 2px rgba(31,42,82,.06),0 8px 24px -12px rgba(31,42,82,.18);
+  --shadow-lg:0 24px 60px -28px rgba(31,42,82,.45);
+  --radius:18px;
+  --radius-sm:12px;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 88% -8%,rgba(0,190,199,.10),transparent 60%),
+    radial-gradient(900px 500px at -5% 0%,rgba(31,42,82,.06),transparent 55%),
+    var(--paper);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.6;
+}
+a{color:inherit}
+::selection{background:var(--teal);color:#04282a}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-page);
-            color: var(--brand-primary);
-            overflow: hidden; /* App-like feel, no main body scrolling */
-        }
+/* ---------- Header ---------- */
+header.site{position:sticky;top:0;z-index:40;background:rgba(246,248,250,.82);backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+.head-wrap{display:flex;align-items:center;padding:16px 0}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.glyph{flex:none;width:42px;height:42px;border-radius:12px;background:var(--navy);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.glyph svg{width:24px;height:24px}
+.brand h1{font-family:var(--font-display);font-weight:600;font-size:19px;line-height:1.1;margin:0;color:var(--navy);letter-spacing:-.01em}
+.brand p{margin:1px 0 0;font-size:12.5px;color:#5b6675;font-weight:500}
 
-        /* Custom Colors & Utilities */
-        .text-primary { color: var(--brand-primary); }
-        .bg-primary { background-color: var(--brand-primary); }
-        .text-accent { color: var(--brand-accent); }
-        .bg-accent { background-color: var(--brand-accent); }
-        .bg-light { background-color: var(--brand-light); }
-        .border-accent { border-color: var(--brand-accent); }
-        .border-neutral { border-color: var(--brand-neutral); }
-        .text-neutral-dark { color: #4b5563; }
+/* ---------- Panels ---------- */
+main{padding:0 0 80px}
+.panel{display:none;animation:rise .45s cubic-bezier(.2,.7,.2,1) both}
+.panel.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-        .fade-in {
-            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
+/* ---------- Hero ---------- */
+.hero{position:relative;margin-top:34px;border-radius:28px;overflow:hidden;background:linear-gradient(135deg,#1c2750 0%,#243365 55%,#1a2342 100%);color:#fff;box-shadow:var(--shadow-lg)}
+.hero .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(110% 90% at 80% 10%,#000,transparent 70%)}
+.hero .orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.7}
+.hero .orb.a{width:340px;height:340px;right:-90px;top:-120px;background:radial-gradient(circle at 30% 30%,rgba(0,190,199,.55),transparent 65%)}
+.hero .orb.b{width:260px;height:260px;right:120px;bottom:-150px;background:radial-gradient(circle at 50% 50%,rgba(210,240,240,.30),transparent 65%)}
+.hero-inner{position:relative;padding:56px 44px 50px;max-width:760px}
+.steps-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0}
+.step-card{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:16px;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;cursor:pointer;transition:transform .16s,box-shadow .2s,border-color .2s}
+.step-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--teal)}
+.step-card[aria-current="true"]{background:var(--navy);border-color:var(--navy)}
+.step-num{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--aqua);color:var(--navy);font-family:var(--font-display);font-weight:600;font-size:19px}
+.step-card[aria-current="true"] .step-num{background:var(--teal);color:#042a2c}
+.step-text{display:flex;flex-direction:column;line-height:1.25}
+.step-text strong{font-size:15.5px;font-weight:600;color:var(--navy)}
+.step-text span{font-size:12.5px;color:#5b6675;margin-top:2px}
+.step-card[aria-current="true"] .step-text strong{color:#fff}
+.step-card[aria-current="true"] .step-text span{color:var(--aqua)}
+@media(max-width:680px){.steps-nav{grid-template-columns:1fr}}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--aqua);background:rgba(0,190,199,.12);border:1px solid rgba(0,190,199,.30);padding:6px 13px;border-radius:999px}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(0,190,199,.25)}
+.hero h2{font-family:var(--font-display);font-weight:500;font-size:clamp(30px,5vw,50px);line-height:1.04;letter-spacing:-.02em;margin:20px 0 0}
+.hero h2 em{font-style:italic;color:var(--teal)}
+.hero p.lede{font-size:17px;color:#cdd6e6;max-width:560px;margin:18px 0 0}
+.hero p.attrib{font-size:12.5px;font-style:italic;color:var(--aqua);margin:12px 0 0;opacity:.85}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{font-family:inherit;font-weight:600;font-size:14px;border-radius:12px;padding:12px 20px;cursor:pointer;border:1px solid transparent;transition:transform .15s,box-shadow .2s,background .2s;text-decoration:none;display:inline-flex;align-items:center;gap:9px}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--teal);color:#042a2c;box-shadow:0 10px 24px -10px rgba(0,190,199,.7)}
+.btn-primary:hover{background:#23ccd4}
+.btn-ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22)}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.hero-stats{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.10);border-top:1px solid rgba(255,255,255,.10)}
+.hstat{padding:22px 28px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);display:flex;align-items:center;gap:14px;text-decoration:none;cursor:pointer;transition:background .2s}
+.hstat:hover{background:rgba(0,190,199,.10)}
+.hstat b{flex:none;display:inline-grid;place-items:center;min-width:56px;height:46px;padding:0 14px;border-radius:14px;background:var(--teal);color:#042a2c;font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1;box-shadow:0 8px 20px -10px rgba(0,190,199,.7);transition:transform .15s}
+.hstat:hover b{transform:translateY(-2px)}
+.hstat b i{font-style:normal;color:#042a2c;font-size:16px;margin-left:1px}
+.hstat span{display:block;font-size:12.5px;color:#aab6cd;font-weight:500}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* ---------- Section heads ---------- */
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:54px 0 22px;flex-wrap:wrap}
+.shead .lbl{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#1f2a52}
+.shead h3{font-family:var(--font-display);font-weight:500;font-size:27px;letter-spacing:-.01em;margin:7px 0 0;color:var(--navy)}
+.shead p{margin:8px 0 0;color:#5b6675;font-size:14.5px;max-width:520px}
 
-        /* Modal Animations */
-        .modal-active {
-            display: flex !important;
-            opacity: 1 !important;
-        }
-        .modal-active .modal-content {
-            transform: scale(1) translateY(0) !important;
-        }
+/* ---------- Intent cards ---------- */
+.intent-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
+.context-box{position:relative;overflow:hidden;margin-top:34px;border-radius:24px;padding:38px 40px;color:#fff;background:linear-gradient(135deg,#1c2750 0%,#243365 55%,#1a2342 100%);box-shadow:var(--shadow-lg)}
+.context-box .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(110% 90% at 90% 10%,#000,transparent 70%)}
+.context-box .eyebrow{position:relative}
+.context-box h2{position:relative;font-family:var(--font-display);font-weight:500;font-size:clamp(22px,3.2vw,32px);line-height:1.1;letter-spacing:-.01em;margin:18px 0 0;max-width:760px}
+.context-box p{position:relative;font-size:15.5px;color:#cdd6e6;max-width:680px;margin:14px 0 0}
+@media(max-width:600px){.context-box{padding:30px 24px}}
+.closing-box{margin-top:48px}
+.closing-btn{position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:13px 22px;border-radius:14px;background:var(--teal);color:#042a2c;font-family:var(--font-body);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 10px 24px -10px rgba(0,190,199,.7);transition:transform .15s,background .2s}
+.closing-btn:hover{background:#23ccd4;transform:translateY(-2px)}
+.closing-btn svg{width:19px;height:19px}
+.next-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:22px;padding:26px 34px;border-radius:20px;background:linear-gradient(135deg,#202c54,#2b3a6e);box-shadow:var(--shadow);text-decoration:none;cursor:pointer;transition:transform .18s,box-shadow .25s}
+.next-cta:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.next-label{font-family:var(--font-display);font-weight:500;font-size:clamp(18px,2.4vw,24px);color:#fff;letter-spacing:-.01em}
+.next-arrow{flex:none;width:58px;height:58px;border-radius:50%;background:var(--teal);color:#042a2c;display:grid;place-items:center;box-shadow:0 10px 24px -10px rgba(0,190,199,.7);transition:transform .2s}
+.next-arrow svg{width:28px;height:28px}
+.next-cta:hover .next-arrow{transform:translateX(6px)}
+@media(max-width:560px){.next-cta{padding:20px 22px;gap:16px}.next-arrow{width:48px;height:48px}.next-arrow svg{width:23px;height:23px}}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.mind{padding:34px;background:linear-gradient(150deg,#202c54,#2b3a6e);color:#fff;border:0}
+.mind .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.mind h4{font-family:var(--font-display);font-weight:500;font-size:25px;margin:14px 0 8px;line-height:1.15}
+.mind .punch{font-size:15.5px;color:var(--aqua);font-weight:500;margin:0 0 22px}
+.mind p{color:#c7d0e2;font-size:14.5px;margin:0 0 16px}
+.pull{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:16px 18px;font-size:14.5px;color:#fff;font-weight:500}
+.eco{padding:30px}
+.eco h4{font-family:var(--font-display);font-weight:500;font-size:22px;color:var(--navy);margin:0 0 6px}
+.eco>.sub{color:#5b6675;font-size:13.5px;margin:0 0 18px}
+.step{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.step:last-child{margin-bottom:0}
+.step.open{border-color:var(--teal);background:var(--aqua-soft)}
+.step>button{width:100%;display:flex;align-items:center;gap:14px;padding:15px 16px;background:transparent;border:0;cursor:pointer;font-family:inherit;font-weight:600;font-size:14.5px;color:var(--navy);text-align:left}
+.step .num{flex:none;width:27px;height:27px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:var(--font-mono);font-size:12px}
+.step.open .num{background:var(--teal);color:#042a2c}
+.step .chev{margin-left:auto;width:18px;height:18px;transition:transform .25s;color:var(--slate)}
+.step.open .chev{transform:rotate(180deg);color:var(--teal-deep)}
+.step .body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.step .body p{margin:0;padding:0 16px 16px 57px;color:#4a5566;font-size:14px}
+.step .body p:not(:last-child){padding-bottom:10px}
+.ecolist{margin:0;padding:0 16px 14px 57px;list-style:none;column-count:2;column-gap:18px}
+.ecolist li{position:relative;padding-left:16px;margin-bottom:7px;font-size:13.5px;color:#3f4a5c;break-inside:avoid;-webkit-column-break-inside:avoid}
+.ecolist li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+@media(max-width:520px){.ecolist{column-count:1}}
 
-        .nav-tab {
-            position: relative;
-            transition: all 0.2s ease;
-        }
-        .nav-tab::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: transparent;
-            transition: background-color 0.2s ease;
-        }
-        .nav-tab.active {
-            color: var(--brand-primary);
-            font-weight: 600;
-        }
-        .nav-tab.active::after {
-            background-color: var(--brand-accent);
-        }
-        .nav-tab:hover:not(.active) {
-            color: var(--brand-accent);
-        }
+/* ---------- Toolkit ---------- */
+.toolbar{position:sticky;top:75px;z-index:30;background:rgba(246,248,250,.92);backdrop-filter:blur(8px);padding:14px 0 12px;margin-top:8px}
+.search{position:relative}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--slate)}
+.search input{width:100%;font-family:inherit;font-size:15px;color:var(--ink);padding:14px 16px 14px 46px;border-radius:14px;border:1px solid var(--line);background:var(--white);box-shadow:var(--shadow);transition:border-color .2s,box-shadow .2s}
+.search input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,190,199,.18)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--white);color:#5b6675;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
+.chip .cdot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.55}
+.chip:hover{border-color:var(--slate);color:var(--navy)}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip[aria-pressed="true"] .cdot{opacity:1}
+.count{font-family:var(--font-mono);font-size:12px;color:#5b6675;margin-left:auto;align-self:center}
 
-        .sub-tab {
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .sub-tab.active {
-            background-color: var(--brand-primary);
-            color: white;
-        }
-        .sub-tab:not(.active) {
-            background-color: white;
-            color: var(--brand-primary);
-            border: 1px solid var(--brand-neutral);
-        }
-        .sub-tab:not(.active):hover {
-            border-color: var(--brand-accent);
-            color: var(--brand-accent);
-        }
+.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:16px;margin-top:6px}
+.tool{position:relative;text-align:left;background:var(--white);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 18px 16px;cursor:pointer;font-family:inherit;transition:transform .16s,box-shadow .2s,border-color .2s;display:flex;flex-direction:column;gap:9px;min-height:128px}
+.tool:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--teal)}
+.tool:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.tool .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center}
+.tool .ic svg{width:20px;height:20px}
+.tool h5{font-size:14.5px;font-weight:600;color:var(--navy);margin:0;line-height:1.25}
+.tool .blurb{font-size:12.5px;color:#697483;margin:0;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tool .foot{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:4px}
+.cat-pill{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;border-radius:6px;font-weight:500}
+.ai-flag{margin-left:auto;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--teal-deep);background:var(--aqua);padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px}
+.ai-flag svg{width:11px;height:11px}
+/* category colour coding */
+.c-digital .ic{background:var(--aqua);color:var(--navy)} .c-digital .cat-pill{background:var(--aqua);color:var(--navy)}
+.c-applied .ic{background:#e72582;color:#fff} .c-applied .cat-pill{background:#fde4f0;color:#e72582}
+.c-grey .ic{background:var(--slate);color:var(--navy)} .c-grey .cat-pill{background:#e3e8ed;color:var(--navy)}
+.c-ai .ic{background:var(--teal);color:var(--navy)} .c-ai .cat-pill{background:var(--teal);color:var(--navy)}
+.c-social .ic{background:var(--navy);color:var(--teal)} .c-social .cat-pill{background:var(--navy);color:var(--aqua)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:#5b6675}
+.empty svg{width:40px;height:40px;color:var(--slate);margin-bottom:12px}
+.empty b{display:block;color:var(--navy);font-size:16px;margin-bottom:4px}
 
-        .custom-scroll {
-            scrollbar-width: thin;
-            scrollbar-color: var(--brand-neutral) transparent;
-        }
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: var(--brand-neutral); border-radius: 3px; }
+/* ---------- Spaces ---------- */
+.env-toggle-wrap{margin-bottom:32px;display:flex}
+.subtabs{display:inline-flex;align-items:center;background:var(--paper-2);border:1px solid var(--line);padding:6px;border-radius:16px}
+.subtabs button{font-family:inherit;font-size:15px;font-weight:600;color:#5b6675;background:transparent;border:0;padding:12px 24px;border-radius:12px;cursor:pointer;transition:all .2s}
+.subtabs button[aria-selected="true"]{background:var(--white);color:var(--navy);box-shadow:0 4px 12px rgba(31,42,82,.08),0 1px 2px rgba(31,42,82,.04)}
+.subtabs button:hover:not([aria-selected="true"]){color:var(--navy)}
+.vt-arrow{display:flex;padding:0 8px;color:var(--slate)}
+.vt-arrow svg{width:20px;height:20px}
+.subpane{display:none}
+.subpane.on{display:block;animation:rise .4s both}
+.credit{font-size:12.5px;font-style:italic;color:#5b6675;margin:0 0 16px}
+.spaces{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.space{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.space>button{display:flex;align-items:center;gap:13px;padding:18px 20px;background:transparent;border:0;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+.space .sn{flex:none;width:34px;height:34px;border-radius:10px;background:var(--navy);color:var(--teal);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:16px}
+.space h5{margin:0;font-size:16px;font-weight:600;color:var(--navy)}
+.space .schev{margin-left:auto;width:18px;height:18px;color:var(--slate);transition:transform .25s}
+.space.open .schev{transform:rotate(180deg);color:var(--teal-deep)}
+.space .sbody{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.space .sinner{padding:0 20px 20px}
+.space .desc{color:#4a5566;font-size:14px;margin:0 0 14px}
+.space .exlbl{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-deep);margin:0 0 9px}
+.space ul{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:9px}
+.space li{display:flex;gap:10px;font-size:13.5px;color:#3f4a5c}
+.space li svg{flex:none;width:16px;height:16px;color:var(--teal-deep);margin-top:2px}
+.space li strong{color:var(--navy);font-weight:600}
+.space .ask{background:var(--aqua-soft);border:1px solid var(--aqua);border-radius:12px;padding:13px 15px;font-size:13.5px;color:var(--navy)}
+.space .ask span{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-deep);display:block;margin-bottom:5px}
+.structs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.struct{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+.struct .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:16px}
+.struct .ic svg{width:24px;height:24px}
+.struct h5{font-family:var(--font-display);font-weight:500;font-size:19px;color:var(--navy);margin:0 0 8px}
+.struct p{margin:0;font-size:14px;color:#4a5566}
 
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-        .accordion-button.active .arrow, .ecosystem-btn.active .arrow {
-            transform: rotate(180deg);
-        }
-        .accordion-button.active {
-            background-color: var(--bg-page);
-        }
-        .ecosystem-btn.active {
-            background-color: var(--brand-light);
-        }
+/* ---------- Modal ---------- */
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(21,32,63,.55);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.modal.on{display:flex;opacity:1}
+.modal .box{width:100%;max-width:480px;background:var(--white);border-radius:22px;box-shadow:var(--shadow-lg);transform:scale(.94) translateY(8px);transition:transform .28s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.modal.on .box{transform:none}
+.modal .top{height:7px}
+.modal .pad{padding:28px}
+.modal .mhead{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.modal .mic{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center}
+.modal .mic svg{width:24px;height:24px}
+.modal h4{font-family:var(--font-display);font-weight:600;font-size:23px;color:var(--navy);margin:0;line-height:1.15}
+.modal .mcat{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5b6675;margin-top:4px}
+.modal .x{margin-left:auto;flex:none;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--white);cursor:pointer;display:grid;place-items:center;color:#5b6675;transition:all .18s}
+.modal .x:hover{background:var(--paper-2);color:var(--navy)}
+.modal .mdesc{color:#3f4a5c;font-size:15px;line-height:1.65;margin:0 0 20px}
+.modal .mtags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.modal .mtag{font-size:12px;font-weight:600;color:var(--teal-deep);background:var(--aqua);padding:6px 11px;border-radius:8px}
+.modal .mfoot{display:flex;justify-content:flex-end;border-top:1px solid var(--line);padding-top:18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-        .tool-btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 9999px; /* Pill shape */
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--brand-primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-align: left;
-        }
-        .tool-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-            border-color: var(--brand-accent);
-            color: var(--brand-accent);
-        }
-        .tool-btn.ai-tool {
-            background: linear-gradient(to right, #ffffff, #f0fdfd);
-            border-color: var(--brand-accent);
-        }
-        .tool-btn.ai-tool:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 190, 199, 0.2);
-            background: linear-gradient(to right, #f0fdfd, #e0fafa);
-        }
-    </style>
+/* ---------- Footer ---------- */
+footer.site{border-top:1px solid var(--line);padding:30px 0;color:#5b6675;font-size:12.5px}
+footer.site .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer.site b{color:var(--navy);font-family:var(--font-display);font-weight:500}
+footer.site a{color:var(--navy);font-weight:600;text-decoration:none;border-bottom:1px solid var(--teal)}
+footer.site a:hover{color:var(--teal-deep)}
+
+/* ---------- Responsive ---------- */
+/* Tablet and below */
+@media(max-width:860px){
+  .intent-grid{grid-template-columns:1fr}
+  .hero-inner{padding:42px 26px 38px}
+}
+/* Phone */
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr}
+  .hstat{align-items:center}
+  .toolbar{top:75px}
+  .shead{margin:40px 0 18px}
+  .subtabs{width:100%;display:flex}
+  .subtabs button{flex:1;padding:12px 8px;font-size:13px;line-height:1.2}
+  .vt-arrow{padding:0 2px}
+}
+</style>
 </head>
-<body class="h-screen flex flex-col antialiased relative">
+<body>
 
-    <header class="bg-white border-b border-gray-200 flex-none z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="py-5 flex justify-between items-center">
-                <div>
-                    <h1 class="text-2xl font-bold text-primary tracking-tight">Instructional Design Toolkit</h1>
-                    <p class="text-sm text-neutral-dark mt-1 font-medium">Architecting environments for behavioural execution.</p>
-                </div>
-            </div>
-            
-            <nav class="flex overflow-x-auto space-x-8 border-b border-transparent">
-                <button onclick="switchTab('tab-intent')" id="btn-intent" class="nav-tab active whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
-                    1. Strategic Intent
-                </button>
-                <button onclick="switchTab('tab-tools')" id="btn-tools" class="nav-tab whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
-                    2. The Toolkit
-                </button>
-                <button onclick="switchTab('tab-architect')" id="btn-architect" class="nav-tab whitespace-nowrap py-3 px-1 text-sm font-medium text-gray-500 focus:outline-none">
-                    3. Architecting the Environment
-                </button>
-            </nav>
-        </div>
-    </header>
+<header class="site">
+  <div class="wrap head-wrap">
+    <div class="brand">
+      <span class="glyph" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7l8-4 8 4-8 4-8-4z" stroke="#00bec7" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4" stroke="#d2f0f0" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </span>
+      <div>
+        <h1>Architecting your learning environment</h1>
+        <p>Learning design with intention for execution</p>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <main class="flex-1 overflow-hidden relative">
-        <div class="absolute inset-0 overflow-y-auto custom-scroll p-4 sm:p-6 lg:p-8">
-            <div class="max-w-7xl mx-auto h-full">
+<main class="wrap">
 
-                <section id="tab-intent" class="tab-pane fade-in block h-full">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
-                        
-                        <!-- Execution Mindset Block -->
-                        <div class="bg-primary text-white rounded-2xl p-8 shadow-lg flex flex-col">
-                            <h2 class="text-2xl font-bold mb-4 text-accent">The Execution Mindset</h2>
-                            <p class="text-lg font-medium mb-6">Stop designing for understanding. Start designing for execution.</p>
-                            
-                            <div class="space-y-6 text-sm text-gray-200 flex-1 flex flex-col justify-center">
-                                <p class="leading-relaxed">
-                                    Knowledge and understanding remain critical foundations of any learning experience, but they are the starting line, not the finish line. We must deeply understand the specific skill being built and actively design to build the learner's confidence to apply it after completing the learning.
-                                </p>
-                                <p class="text-white font-semibold leading-relaxed bg-white/10 p-4 rounded-xl border border-white/20 shadow-sm">
-                                    The true measure of our instructional design is not the final quiz score—it is whether the learner has the competence and self-assurance to execute the skills and behaviours required for the job.
-                                </p>
-                            </div>
-                        </div>
+  <nav class="steps-nav" aria-label="Section navigation">
+    <a class="step-card" data-goto="intent" href="#" aria-current="true">
+      <span class="step-num">1</span>
+      <span class="step-text"><strong>Determine the ecosystem</strong><span>Start with purpose</span></span>
+    </a>
+    <a class="step-card" data-goto="toolkit" href="#">
+      <span class="step-num">2</span>
+      <span class="step-text"><strong>The toolkit</strong><span>Choose the right tools</span></span>
+    </a>
+    <a class="step-card" data-goto="architect" href="#">
+      <span class="step-num">3</span>
+      <span class="step-text"><strong>The environment</strong><span>Where learning happens</span></span>
+    </a>
+  </nav>
 
-                        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 overflow-y-auto custom-scroll">
-                            <h3 class="text-xl font-bold text-primary mb-6">Mapping the Execution Ecosystem</h3>
-                            <div class="space-y-3" id="ecosystem-accordion">
-                                
-                                <!-- Step 1 -->
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
-                                        <div class="flex items-center">
-                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">1</span>
-                                            Target Behaviour
-                                        </div>
-                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-                                    <div class="accordion-content bg-white">
-                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
-                                            <p>What specific behaviour are we wanting to change and see? Are we looking at a skills or cultural shift? This focuses squarely on the observable actions we need.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 2 -->
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
-                                        <div class="flex items-center">
-                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">2</span>
-                                            System & Workflow Constraints
-                                        </div>
-                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-                                    <div class="accordion-content bg-white">
-                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
-                                            <p>Does the actual work environment permit this behaviour? If the software is slow, the process is broken, or the physical tools are missing, the training will fail regardless of quality.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 3 -->
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
-                                        <div class="flex items-center">
-                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">3</span>
-                                            Performance Support
-                                        </div>
-                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-                                    <div class="accordion-content bg-white">
-                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
-                                            <p>Do they need to memorise this, or can we provide a tool? Design job aids, checklists, and search-driven resources to support execution exactly when it is needed.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 4 -->
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
-                                        <div class="flex items-center">
-                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">4</span>
-                                            Social & Leadership Dynamics
-                                        </div>
-                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-                                    <div class="accordion-content bg-white">
-                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
-                                            <p>Will their manager support this new behaviour? Will their peers ridicule them for doing it differently? Social proof and leader modelling are often stronger than any formal training module.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Step 5 -->
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button class="ecosystem-btn w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none" aria-expanded="false">
-                                        <div class="flex items-center">
-                                            <span class="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3">5</span>
-                                            Data & Feedback Loops
-                                        </div>
-                                        <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </button>
-                                    <div class="accordion-content bg-white">
-                                        <div class="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 mt-2">
-                                            <p>How will the learner know they are executing correctly? Design mechanisms for immediate feedback, whether through system data, peer review, or coaching.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="tab-tools" class="tab-pane fade-in hidden h-full">
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-bold text-primary">The Execution Toolkit</h2>
-                        <p class="text-gray-600 mt-1">Select a modality below to explore how it drives skills and behaviour.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                        
-                        <!-- Flexible & Blended -->
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
-                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
-                                <div class="w-10 h-10 rounded-lg bg-light text-primary flex items-center justify-center mr-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-primary">Flexible & Blended</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2.5">
-                                <button class="tool-btn" onclick="openModal('elearning')">eLearning Modules</button>
-                                <button class="tool-btn" onclick="openModal('microlearning')">Microlearning</button>
-                                <button class="tool-btn" onclick="openModal('standardvideos')">Videos</button>
-                                <button class="tool-btn" onclick="openModal('videos')">Interactive Videos</button>
-                                <button class="tool-btn" onclick="openModal('webinars')">Webinars</button>
-                                <button class="tool-btn" onclick="openModal('podcasts')">Audio Overviews / Podcasts</button>
-                                <button class="tool-btn" onclick="openModal('jobaids')">Digital Job Aids</button>
-                                <button class="tool-btn" onclick="openModal('qrg')">Quick Reference Guides</button>
-                                <button class="tool-btn" onclick="openModal('mobile')">Mobile Apps</button>
-                                <button class="tool-btn" onclick="openModal('vilt')">Virtual Classrooms</button>
-                                <button class="tool-btn" onclick="openModal('journeys')">Learning Journeys</button>
-                                <button class="tool-btn" onclick="openModal('live')">Live Learning</button>
-                                <button class="tool-btn" onclick="openModal('gamified')">Gamified Learning</button>
-                                <button class="tool-btn" onclick="openModal('adaptive')">Adaptive Pathways</button>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
-                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
-                                <div class="w-10 h-10 rounded-lg bg-light text-primary flex items-center justify-center mr-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-primary">Experiential & Applied</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2.5">
-                                <button class="tool-btn" onclick="openModal('scenarios')">Scenario-Based Learning</button>
-                                <button class="tool-btn" onclick="openModal('branching')">Branching Simulations</button>
-                                <button class="tool-btn" onclick="openModal('vr')">AR/VR Simulations</button>
-                                <button class="tool-btn" onclick="openModal('roleplay')">Live Roleplays</button>
-                                <button class="tool-btn" onclick="openModal('ojt')">On-the-job Training</button>
-                                <button class="tool-btn" onclick="openModal('hackathons')">Hackathons</button>
-                                <button class="tool-btn" onclick="openModal('action')">Action Learning</button>
-                                <button class="tool-btn" onclick="openModal('labs')">Practice Labs</button>
-                                <button class="tool-btn" onclick="openModal('sandbox')">Sandbox</button>
-                                <button class="tool-btn" onclick="openModal('bootcamps')">Tech Boot Camps</button>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
-                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
-                                <div class="w-10 h-10 rounded-lg bg-light text-accent flex items-center justify-center mr-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-primary">AI Environmental learning</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2.5">
-                                <button class="tool-btn ai-tool" onclick="openModal('aibots')">AI Roleplay Bots</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('aiconvo')">AI Conversation Simulations</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('copilots')">Performance Copilots</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('aicoach')">AI Coaching</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('gensearch')">Generative Search</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('groupagents')">Group Learning Agents</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('studymode')">Study Guides / Mode</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('personalisation')">Personalisation Agents</button>
-                                <button class="tool-btn ai-tool" onclick="openModal('socratic')">Socratic Thought Partner</button>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col h-full hover:shadow-md transition-shadow">
-                            <div class="flex items-center mb-4 pb-3 border-b border-gray-100">
-                                <div class="w-10 h-10 rounded-lg bg-light text-primary flex items-center justify-center mr-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                </div>
-                                <h3 class="text-lg font-bold text-primary">Social & Collaborative</h3>
-                            </div>
-                            <div class="flex flex-wrap gap-2.5">
-                                <button class="tool-btn" onclick="openModal('cop')">Communities of Practice</button>
-                                <button class="tool-btn" onclick="openModal('mentoring')">Role/Peer Mentoring</button>
-                                <button class="tool-btn" onclick="openModal('coaching')">Coaching</button>
-                                <button class="tool-btn" onclick="openModal('cohorts')">Cohort-Based Learning</button>
-                                <button class="tool-btn" onclick="openModal('forums')">Social Forums</button>
-                                <button class="tool-btn" onclick="openModal('champions')">Champion Networks</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-                <section id="tab-architect" class="tab-pane fade-in hidden h-full flex flex-col">
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-200 pb-4">
-                        <h2 class="text-2xl font-bold text-primary">Architecting the Environment</h2>
-                        <div class="flex space-x-2 mt-4 sm:mt-0 bg-gray-100 p-1 rounded-full">
-                            <button onclick="switchSubTab('sub-spaces')" id="btn-spaces" class="sub-tab active">7 Spaces for Learning</button>
-                            <button onclick="switchSubTab('sub-structures')" id="btn-structures" class="sub-tab">Structural Spaces</button>
-                        </div>
-                    </div>
-
-                    <div id="sub-spaces" class="sub-pane flex-1 overflow-y-auto custom-scroll pr-2">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
-                            <div id="spaces-accordion" class="flex flex-col divide-y divide-gray-100">
-                                <!-- JS will populate accordion here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="sub-structures" class="sub-pane hidden flex-1 overflow-y-auto custom-scroll pr-2">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            
-                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                                <div class="w-12 h-12 bg-light text-primary rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-primary mb-2">Hackathons</h3>
-                                <p class="text-sm text-gray-600">Intensive, time-boxed collaborative events. They force teams to apply skills under pressure to solve real business problems, rapidly accelerating competence and teamwork.</p>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                                <div class="w-12 h-12 bg-light text-primary rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-primary mb-2">Communities of Practice</h3>
-                                <p class="text-sm text-gray-600">Sustained, structured groups of practitioners who share a passion for a specific discipline. They learn how to execute better by sharing real-world challenges and solutions.</p>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                                <div class="w-12 h-12 bg-light text-accent rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-primary mb-2">Champion Networks</h3>
-                                <p class="text-sm text-gray-600">Activating peer influencers to model the target behaviour. Social proof travels faster than formal training. Champions make the new behaviour safe, trusted, and normal.</p>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                                <div class="w-12 h-12 bg-light text-accent rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-primary mb-2">Workflow Integration</h3>
-                                <p class="text-sm text-gray-600">Embedding tools, job aids, and micro-learnings directly into the systems where the work happens (e.g., Salesforce, Teams), ensuring support is available at the exact point of execution.</p>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </section>
-
-            </div>
-        </div>
-    </main>
-
-    <div id="tool-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/50 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]" id="tool-modal-content">
-            <div class="p-6 overflow-y-auto custom-scroll">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 id="modal-title" class="text-2xl font-bold text-primary pr-4">Tool Title</h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none flex-shrink-0">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-                <div class="w-12 h-1 bg-accent mb-4 rounded-full"></div>
-                <p id="modal-desc" class="text-gray-600 text-[15px] leading-relaxed mb-6">Description goes here.</p>
-                <div class="flex justify-end pt-4 border-t border-gray-100">
-                    <button onclick="closeModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Got it</button>
-                </div>
-            </div>
-        </div>
+  <!-- ============ INTENT ============ -->
+  <section class="panel on" id="intent" role="tabpanel">
+    <div class="hero">
+      <div class="grid-deco" aria-hidden="true"></div>
+      <span class="orb a" aria-hidden="true"></span>
+      <span class="orb b" aria-hidden="true"></span>
+      <div class="hero-inner">
+        <span class="eyebrow"><span class="dot"></span>The execution mindset</span>
+        <h2>Stop designing for understanding. Design for <em>execution.</em></h2>
+        <p class="attrib">— Isabella Manning, Head of Organisational Change Management, Virgin Australia</p>
+        <p class="lede">Knowledge is the starting line, not the finish. The real measure of our work is whether a learner has the capability and the confidence to do the job once the training is completed.</p>
+      </div>
+      <div class="hero-stats">
+        <a class="hstat" data-goto="toolkit" href="#"><b>45<i>+</i></b><span>Learning modalities, one searchable library</span></a>
+        <a class="hstat" data-goto="architect" href="#"><b>7</b><span>Spaces where real learning happens</span></a>
+        <a class="hstat" data-goto="toolkit" href="#"><b>4</b><span>Design categories, from digital to AI</span></a>
+      </div>
     </div>
 
-    <script>
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active', 'text-primary'));
-            document.querySelectorAll('.nav-tab').forEach(el => el.classList.add('text-gray-500'));
-            
-            document.getElementById(tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-' + tabId.replace('tab-', ''));
-            activeBtn.classList.add('active', 'text-primary');
-            activeBtn.classList.remove('text-gray-500');
-        }
+    <div class="shead">
+      <div>
+        <div class="lbl">Start here</div>
+        <h3>Determine the Learning Ecosystem</h3>
+        <p>Move beyond training to real change.</p>
+      </div>
+    </div>
 
-        function switchSubTab(subId) {
-            document.querySelectorAll('.sub-pane').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(subId).classList.remove('hidden');
-            document.getElementById('btn-' + subId.replace('sub-', '')).classList.add('active');
-        }
+    <div class="intent-grid">
+      <div class="card eco">
+        <h4>Four considerations</h4>
+        <p class="sub">The type of instructional environment, and the tools you need to create it, will be driven by the understanding and purpose of the training. Work through these in order before choosing a tool. Select each to expand.</p>
+        <div id="ecoAcc"></div>
+      </div>
 
-        // Accordion Data for 7 Spaces
-        const spacesData = [
-            { 
-                title: "1. Secret Spaces", 
-                description: "These are private, individualised spaces where learning is self-directed and often done alone. It's ideal for foundational knowledge, reflection, and confidential practice.",
-                examples: [
-                    "An employee uses an <strong>AI Coach</strong> to practise responses for a performance review.",
-                    "A new hire completes a self-paced <strong>online course</strong> on company policies.",
-                    "A professional listens to an industry analysis <strong>podcast</strong> during their commute."
-                ],
-                question: "How can we better support and provide resources for 'secret space' learning without being intrusive?"
-            },
-            { 
-                title: "2. Group Spaces", 
-                description: "Collaborative environments where learners construct knowledge together. This is the 'we' space for teamwork, discussion, and social learning.",
-                examples: [
-                    "A team uses a <strong>Socratic Thought Partner</strong> in a webinar breakout room to deepen their analysis.",
-                    "A cohort participates in a face-to-face workshop to solve a complex case study.",
-                    "Colleagues receive <strong>just-in-time feedback</strong> from an AI on a shared project proposal."
-                ],
-                question: "What is one 'group space' activity we could enhance with a collaborative digital tool?"
-            },
-            { 
-                title: "3. Publishing Spaces", 
-                description: "Spaces where learners create and share content. This act of creation solidifies understanding and contributes to a shared knowledge base.",
-                examples: [
-                    "A manager writes a reflective blog post on leadership using an <strong>integrated AI writing assistant</strong>.",
-                    "As an assessment, a team must create and share a 'how-to' <strong>video</strong> on a new software process.",
-                    "An employee uses an <strong>AI partner</strong> to help script and produce an audio summary of their key project learnings."
-                ],
-                question: "What opportunities exist for our teams to 'publish' their learnings, and what platforms could we use?"
-            },
-            { 
-                title: "4. Performing Spaces", 
-                description: "Environments where learners actively demonstrate skills and apply knowledge in a practical, observable way.",
-                examples: [
-                    "A team member enters an <strong>AI role-play</strong> simulation to handle a difficult negotiation.",
-                    "Staff use a <strong>gamified learning</strong> platform to compete in identifying simulated security threats.",
-                    "A team leader practises a difficult conversation in a safe, immersive <strong>VR environment</strong>."
-                ],
-                question: "Beyond role-playing, what are some low-cost ways we can create 'performing spaces' for our employees to practise critical skills?"
-            },
-            { 
-                title: "5. Participation Spaces", 
-                description: "These are live, synchronous events where the primary mode of learning is active involvement and contribution.",
-                examples: [
-                    "Staff contribute ideas and vote in live polls during an all-hands <strong>webinar</strong>.",
-                    "Employees engage in a Q&A session with senior leaders during a weekly stand-up meeting.",
-                    "L&D uses <strong>smart moderation tools</strong> to seamlessly manage a large, interactive virtual conference."
-                ],
-                question: "How can we increase meaningful 'participation' in our live events beyond simple Q&A?"
-            },
-            { 
-                title: "6. Data Spaces", 
-                description: "Spaces focused on the interpretation and analysis of information. Here, learning comes from finding insights and making sense of data.",
-                examples: [
-                    "An analyst team uses <strong>predictive analysis tools</strong> to forecast market trends based on a large dataset.",
-                    "A specialist uses an <strong>AI data coach</strong> to help visualise engagement metrics.",
-                    "Learners are tasked with reviewing team performance dashboards to identify opportunities for improvement."
-                ],
-                question: "What organisational data could we safely turn into a learning activity to improve business acumen?"
-            },
-            { 
-                title: "7. Watching Spaces", 
-                description: "Environments for passive consumption of content. While passive, this is a crucial space for information dissemination and initial exposure to new topics.",
-                examples: [
-                    "A new hire <strong>watches</strong> a pre-recorded welcome video from the CEO as part of their onboarding.",
-                    "An employee <strong>watches</strong> a recording of a webinar they missed.",
-                    "After watching a long video, a learner uses <strong>Study Mode</strong> to get an automated summary of key points."
-                ],
-                question: "How can we make content in our 'watching spaces' more engaging and link it to active learning tasks?"
-            }
-        ];
+      <div class="card mind">
+        <div class="tag">The intent</div>
+        <h4>Capability, then confidence</h4>
+        <p class="punch">A quiz score proves recall. It does not prove a person can act under real pressure.</p>
+        <p>Understanding remains a critical foundation of any learning experience. But we have to know exactly which skill is being built, then deliberately design for the learner to apply it afterwards, in the messy reality of the job.</p>
+        <div class="pull">If the learning ends at the assessment, we have only designed half the experience. The other half is execution.</div>
+      </div>
+    </div>
 
-        // Populate 7 Spaces Accordion
-        const accordionContainer = document.getElementById('spaces-accordion');
-        spacesData.forEach((space, index) => {
-            const item = document.createElement('div');
-            
-            const button = document.createElement('button');
-            button.className = 'accordion-button w-full flex justify-between items-center p-4 text-left font-semibold text-primary hover:bg-gray-50 transition-colors focus:outline-none';
-            button.setAttribute('aria-expanded', 'false');
-            button.innerHTML = `
-                <span>${space.title}</span>
-                <svg class="arrow w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            `;
+    <a class="next-cta" data-goto="toolkit" href="#">
+      <span class="next-label">Now browse the toolkit</span>
+      <span class="next-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </section>
 
-            const content = document.createElement('div');
-            content.className = 'accordion-content bg-white';
-            
-            const examplesList = space.examples.map(ex => `<li class="flex items-start text-gray-600"><span class="text-accent mr-2 mt-0.5">•</span><span>${ex}</span></li>`).join('');
+  <!-- ============ TOOLKIT ============ -->
+  <section class="panel" id="toolkit" role="tabpanel">
+    <div class="context-box">
+      <div class="grid-deco" aria-hidden="true"></div>
+      <span class="eyebrow"><span class="dot"></span>The toolkit</span>
+      <h2>These are the tools to execute your training.</h2>
+      <p>No single tool creates change on its own. Each one below is an option for building the learning ecosystem you just mapped. Match the tool to the purpose, not the other way round.</p>
+    </div>
 
-            content.innerHTML = `
-                <div class="p-4 pt-0 text-sm border-t border-gray-100 mt-2">
-                    <p class="text-gray-600 mb-4 leading-relaxed">${space.description}</p>
-                    <div class="mb-5">
-                        <h4 class="font-bold text-primary mb-2">Practical Examples:</h4>
-                        <ul class="space-y-2 ml-1">
-                            ${examplesList}
-                        </ul>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                        <span class="font-bold text-primary block mb-1">Discussion Question:</span>
-                        <p class="text-gray-600 italic">"${space.question}"</p>
-                    </div>
-                </div>
-            `;
+    <div class="shead">
+      <div>
+        <div class="lbl">02 / The toolkit</div>
+        <h3>Choosing the right tool for the job</h3>
+        <p>The tools are grouped into four categories: digital and scalable for reaching many learners, experiential for hands-on practice, AI-native for adaptive and conversational learning, and social for learning through people. Search, filter by category, or select any card to see when and why to reach for it.</p>
+      </div>
+    </div>
 
-            item.appendChild(button);
-            item.appendChild(content);
-            accordionContainer.appendChild(item);
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="q" type="text" placeholder="Search modalities: roleplay, microlearning, copilot..." aria-label="Search modalities">
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filter by category">
+        <button class="chip" aria-pressed="true" data-cat="all">All</button>
+        <button class="chip c-digital" aria-pressed="false" data-cat="digital"><span class="cdot"></span>Digital &amp; scalable</button>
+        <button class="chip c-applied" aria-pressed="false" data-cat="applied"><span class="cdot"></span>Experiential</button>
+        <button class="chip c-ai" aria-pressed="false" data-cat="ai"><span class="cdot"></span>AI-native</button>
+        <button class="chip c-social" aria-pressed="false" data-cat="social"><span class="cdot"></span>Social</button>
+        <span class="count" id="count"></span>
+      </div>
+    </div>
 
-            // Click interaction
-            button.addEventListener('click', () => {
-                const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                
-                // Close others
-                document.querySelectorAll('.accordion-button').forEach(btn => {
-                    if (btn !== button) {
-                        btn.setAttribute('aria-expanded', 'false');
-                        btn.classList.remove('active');
-                        btn.nextElementSibling.style.maxHeight = null;
-                    }
-                });
+    <div class="tk-grid" id="grid"></div>
 
-                if (isExpanded) {
-                    button.setAttribute('aria-expanded', 'false');
-                    button.classList.remove('active');
-                    content.style.maxHeight = null;
-                } else {
-                    button.setAttribute('aria-expanded', 'true');
-                    button.classList.add('active');
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                }
-            });
-            
-            if(index === 0) button.click();
-        });
+    <a class="next-cta" data-goto="architect" href="#">
+      <span class="next-label">Next, architect the environment</span>
+      <span class="next-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </section>
 
-        // Initialize Ecosystem Accordion
-        const ecosystemBtns = document.querySelectorAll('.ecosystem-btn');
-        ecosystemBtns.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                const content = button.nextElementSibling;
-                const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                
-                ecosystemBtns.forEach(btn => {
-                    if (btn !== button) {
-                        btn.setAttribute('aria-expanded', 'false');
-                        btn.classList.remove('active');
-                        btn.nextElementSibling.style.maxHeight = null;
-                    }
-                });
+  <!-- ============ ARCHITECT ============ -->
+  <section class="panel" id="architect" role="tabpanel">
+    <div class="shead">
+      <div>
+        <div class="lbl">03 / The environment</div>
+        <h3>Architecting the environment</h3>
+        <p>Consider the environments in which learning actually happens. These are suggestions for thinking about how the tools can be used, or held together, in different learning environments.</p>
+      </div>
+    </div>
 
-                if (isExpanded) {
-                    button.setAttribute('aria-expanded', 'false');
-                    button.classList.remove('active');
-                    content.style.maxHeight = null;
-                } else {
-                    button.setAttribute('aria-expanded', 'true');
-                    button.classList.add('active');
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                }
-            });
-            
-            if(index === 0) button.click();
-        });
+    <div class="env-toggle-wrap">
+      <div class="subtabs" role="tablist">
+        <button role="tab" aria-selected="true" data-sub="spaces">7 spaces for learning</button>
+        <div class="vt-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4-4m-4 4l4 4"/></svg>
+        </div>
+        <button role="tab" aria-selected="false" data-sub="structures">Structural spaces</button>
+      </div>
+    </div>
 
-        const toolData = {
-            'elearning': { title: 'eLearning Modules', desc: 'Interactive, self-paced digital courses. Best used to build foundational knowledge safely and consistently before moving to real-world application.' },
-            'microlearning': { title: 'Microlearning', desc: 'Bite-sized, hyper-focused content designed to be consumed in the flow of work. Perfect for immediate application and reinforcing specific behaviours.' },
-            'standardvideos': { title: 'Videos', desc: 'Short, engaging visual content. Excellent for demonstrating practical steps, sharing leadership narratives, or quickly explaining complex concepts.' },
-            'videos': { title: 'Interactive Videos', desc: 'Video content with embedded decision points. Allows learners to observe a behaviour and make choices, bridging the gap between passive viewing and active execution.' },
-            'webinars': { title: 'Webinars', desc: 'Live or recorded online presentations. Highly effective for scaling knowledge, launching new initiatives, or broad capability building across large, dispersed audiences.' },
-            'podcasts': { title: 'Audio Overviews / Podcasts', desc: 'Audio-based learning ideal for storytelling, leadership perspectives, and exploring the "why" behind a cultural shift, accessible during downtime or commutes.' },
-            'jobaids': { title: 'Digital Job Aids', desc: 'Checklists, quick-reference guides, and diagrams accessible at the point of need. Reduces cognitive load so the brain can focus entirely on execution.' },
-            'qrg': { title: 'Quick Reference Guides', desc: 'Concise, step-by-step documentation designed for immediate use on the job. They eliminate the need to memorise complex processes, reducing errors during execution.' },
-            'mobile': { title: 'Mobile Apps', desc: 'Learning delivered directly to a smartphone. Crucial for deskless workers who need performance support and skill reinforcement in the field.' },
-            'vilt': { title: 'Virtual Classrooms', desc: 'Live, instructor-led sessions conducted online. Highly effective when used for group discussion, guided practice, and clarifying complex execution steps.' },
-            'journeys': { title: 'Learning Journeys', desc: 'Structured, multi-modal paths delivered over time. They weave together content, practice, and social elements to sustainably build complex capabilities.' },
-            'live': { title: 'Live Learning', desc: 'Synchronous events—whether virtual or physical—designed for high interactivity, immediate Q&A, and real-time social connection among peers.' },
-            'gamified': { title: 'Gamified Learning', desc: 'Applying game mechanics like points, levels, and badges to learning experiences. Drives engagement and repeat practice by making behavioural execution rewarding.' },
-            'adaptive': { title: 'Adaptive Pathways', desc: 'Algorithms that adjust the learning journey based on performance. Ensures learners spend time executing where they are weak, not reviewing what they already know.' },
-            
-            'scenarios': { title: 'Scenario-Based Learning', desc: 'Places the learner in a realistic context to solve a problem. It forces the application of knowledge, allowing learners to practise making decisions safely.' },
-            'branching': { title: 'Branching Simulations', desc: 'Complex scenarios where decisions impact the outcome. Builds critical thinking by letting learners experience the consequences of poor execution.' },
-            'vr': { title: 'AR/VR Simulations', desc: 'Immersive spatial learning. Builds profound muscle memory and situational awareness without the risk or cost of real-world failure.' },
-            'roleplay': { title: 'Live Roleplays', desc: 'Practising conversational or physical skills with peers or actors. Excellent for building confidence in communication, sales, or de-escalation behaviours.' },
-            'ojt': { title: 'On-the-job Training', desc: 'Learning while doing the actual work under supervision. The ultimate execution environment, providing immediate, contextual feedback.' },
-            'hackathons': { title: 'Hackathons', desc: 'Intensive, time-boxed collaborative events. They force teams to apply skills under pressure to solve real business problems, rapidly accelerating competence.' },
-            'action': { title: 'Action Learning', desc: 'Small groups working on real, complex problems, taking action, and learning as individuals and as a team. deeply embeds strategic execution.' },
-            'labs': { title: 'Practice Labs', desc: 'Dedicated environments where learners can experiment, break things, and practice skills safely before applying them in live production or real-world scenarios.' },
-            'sandbox': { title: 'Sandbox', desc: 'Isolated testing environments containing dummy data. Crucial for software or systems training, allowing learners to build confidence through trial and error.' },
-            'bootcamps': { title: 'Tech Boot Camps', desc: 'Intensive, accelerated training programmes focused on rapid skill acquisition, typically blending deep technical instruction with immediate, hands-on projects.' },
-            
-            'aibots': { title: 'AI Roleplay Bots', desc: 'Practise difficult conversations with an AI avatar. Provides a psychologically safe environment to rehearse human skills and receive instant, objective feedback.' },
-            'aiconvo': { title: 'AI Conversation Simulations', desc: 'Dynamic, voice or text-driven scenarios where learners interact with AI to practice coaching, sales, or de-escalation, receiving instant behavioural feedback.' },
-            'copilots': { title: 'Performance Copilots', desc: 'AI assistants integrated into the workflow. They provide contextual guidance and answers in real-time, practically eliminating the need to memorise processes.' },
-            'aicoach': { title: 'AI Coaching', desc: 'Personalised, ongoing feedback generated by AI based on a learner\'s performance data. Drives continuous behavioural refinement.' },
-            'gensearch': { title: 'Generative Search', desc: 'AI-powered enterprise search that synthesises answers from company documentation. Empowers learners to find exact execution steps instantly.' },
-            'groupagents': { title: 'Group Learning Agents', desc: 'AI facilitators integrated into cohort chats or forums. They prompt discussion, summarise insights, and gently challenge the group\'s thinking.' },
-            'studymode': { title: 'Study Guides / Mode', desc: 'AI-generated summaries, flashcards, and interactive knowledge checks. Helps learners rapidly digest complex information and prepare their minds for practical application.' },
-            'personalisation': { title: 'Personalisation Agents', desc: 'AI assistants that analyse a learner\'s role, experience, and performance to dynamically curate content, ensuring the learning experience is hyper-relevant.' },
-            'socratic': { title: 'Socratic Thought Partner', desc: 'An AI trained to ask probing questions rather than just providing answers. Forces the learner to critically evaluate their own reasoning and problem-solving strategies.' },
+    <div class="subpane on" id="spaces"><p class="credit">Adapted from <em>Clicks and Bricks: 7 Spaces for Learning</em> by Ewan McIntosh, NoTosh.</p><div class="spaces" id="spacesGrid"></div></div>
+    <div class="subpane" id="structures"><div class="structs" id="structGrid"></div></div>
 
-            'cop': { title: 'Communities of Practice', desc: 'Sustained groups of practitioners sharing challenges and solutions. They learn how to execute better through peer-to-peer social learning.' },
-            'mentoring': { title: 'Role/Peer Mentoring', desc: 'Pairing experienced executors with novices. Leverages trust and relational learning to transfer nuanced, unwritten skills and cultural norms.' },
-            'coaching': { title: 'Coaching', desc: 'One-on-one or small group guidance focused on unlocking potential and improving performance through targeted feedback, reflection, and accountability.' },
-            'cohorts': { title: 'Cohort-Based Learning', desc: 'Groups moving through a programme together. Creates powerful social accountability and peer modelling, ensuring higher completion and application rates.' },
-            'forums': { title: 'Social Forums', desc: 'Digital spaces for asynchronous discussion. Allows for the crowdsourcing of solutions and the normalisation of new behaviours across dispersed teams.' },
-            'champions': { title: 'Champion Networks', desc: 'Activating peer influencers to model the target behaviour. Champions make the new behaviour safe, trusted, and normal across the organisation.' }
-        };
+    <div class="context-box closing-box">
+      <div class="grid-deco" aria-hidden="true"></div>
+      <span class="eyebrow"><span class="dot"></span>Let's work together</span>
+      <h2>Ready to put this into practice?</h2>
+      <p>Whether you are building a single, one-stop-shop entry point into your learning, or looking for ways to adapt your instructional design and development with AI, get in touch for all your AI training and workflow needs.</p>
+      <a class="closing-btn" href="mailto:kathryn.mcgilvray@eles.com.au">
+        <span>Contact Kathryn McGilvray</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+      </a>
+    </div>
+  </section>
 
-        // Modal Logic
-        const modal = document.getElementById('tool-modal');
-        const modalContent = document.getElementById('tool-modal-content');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
+</main>
 
-        function openModal(toolId) {
-            const tool = toolData[toolId];
-            if(tool) {
-                modalTitle.textContent = tool.title;
-                modalDesc.textContent = tool.desc;
-                
-                // Show modal
-                modal.classList.remove('hidden');
-                // Trigger animation next frame
-                requestAnimationFrame(() => {
-                    modal.classList.add('modal-active');
-                });
-            }
-        }
+<footer class="site">
+  <div class="wrap">
+    <span><b>eLearning Educational Solutions Pty Ltd</b> &copy; 2026</span>
+    <span>Contact: <a href="mailto:kathryn.mcgilvray@eles.com.au">kathryn.mcgilvray@eles.com.au</a> for your personalised AI training.</span>
+  </div>
+</footer>
 
-        function closeModal() {
-            modal.classList.remove('modal-active');
-            // Wait for transition before hiding
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
+<!-- Modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="box">
+    <div class="top" id="mTop"></div>
+    <div class="pad">
+      <div class="mhead">
+        <div class="mic" id="mIc"></div>
+        <div>
+          <h4 id="mTitle">Title</h4>
+          <div class="mcat" id="mCat"></div>
+        </div>
+        <button class="x" id="mClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <p class="mdesc" id="mDesc"></p>
+      <div class="mtags" id="mTags"></div>
+      <div class="mfoot"><button class="btn btn-primary" id="mGot">Got it</button></div>
+    </div>
+  </div>
+</div>
 
-        // Close modal on outside click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-    </script>
+<script>
+/* ---------- Icons ---------- */
+const I = {
+  screen:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  zap:'<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
+  play:'<circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3V9z"/>',
+  film:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M16 4v16M3 9h5M16 9h5M3 15h5M16 15h5"/>',
+  cast:'<path d="M3 19a6 6 0 016 6M3 14a11 11 0 0111 11M3 5h18v10"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  book:'<path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2V5z"/><path d="M18 3v18"/>',
+  phone:'<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/>',
+  monitor:'<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8M12 16v5"/>',
+  route:'<circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 013 3v6"/>',
+  users:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3"/>',
+  sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  git:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="9" r="3"/><path d="M18 12a6 6 0 01-6 6H9"/>',
+  cube:'<path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/><path d="M3 7l9 5 9-5M12 12v10"/>',
+  hand:'<path d="M18 11V6a2 2 0 00-4 0M14 10V4a2 2 0 00-4 0v6M10 10V6a2 2 0 00-4 0v8a8 8 0 008 8h0a8 8 0 008-8v-3a2 2 0 00-4 0"/>',
+  briefcase:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/>',
+  flask:'<path d="M9 2h6M10 2v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V2"/>',
+  box:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 8l3-5h12l3 5"/>',
+  bot:'<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4M8 13h.01M16 13h.01M9 19v2M15 19v2"/>',
+  chat:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/>',
+  copilot:'<path d="M12 2a4 4 0 014 4v2a4 4 0 01-8 0V6a4 4 0 014-4z"/><path d="M5 20a7 7 0 0114 0"/>',
+  compass:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-4 1 2-5 4-1z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/>',
+  network:'<circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M12 11l-5 6M12 11l5 6"/>',
+  cards:'<rect x="3" y="5" width="14" height="10" rx="2"/><path d="M7 19h12a2 2 0 002-2V9"/>',
+  spark:'<path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/>',
+  brain:'<path d="M9 3a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 006 1V4a3 3 0 00-3-1zM15 3a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-6 1"/>',
+  people2:'<circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0112 0M14 20a5 5 0 017-4"/>',
+  handshake:'<circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M2 20a6 6 0 0112 0M14 19a5 5 0 017-3"/>',
+  layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
+  cohort:'<circle cx="12" cy="7" r="3"/><path d="M5 21a7 7 0 0114 0"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/>',
+  message:'<path d="M21 12a8 8 0 11-3-6l3-1-1 3a8 8 0 011 4z"/>',
+  star:'<path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z"/>',
+  workflow:'<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M9 6h6a3 3 0 013 3v6"/>',
+  flag:'<path d="M4 21V4M4 4h13l-2 4 2 4H4"/>',
+  shield:'<path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/>'
+};
+function svg(name){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(I[name]||I.screen)+'</svg>';}
+
+/* ---------- Data ---------- */
+const CATS = {
+  digital:{label:'Digital & scalable',cls:'c-digital'},
+  applied:{label:'Experiential & applied',cls:'c-ai'}, // Note: Intentionally matching classes from styles
+  ai:{label:'AI-native',cls:'c-ai'},
+  social:{label:'Social & collaborative',cls:'c-social'}
+};
+// Fixing one color class mismatch in the original object map based on styles provided:
+CATS.applied.cls = 'c-applied';
+
+const TOOLS = [
+  {id:'elearning',cat:'digital',icon:'screen',title:'eLearning modules',desc:'Interactive, self-paced digital courses. Best used to build foundational knowledge safely and consistently before learners move to real-world application.',tags:['Foundational knowledge','Self-paced','Consistent at scale']},
+  {id:'microlearning',cat:'digital',icon:'zap',title:'Microlearning',desc:'Bite-sized, hyper-focused content designed to be consumed in the flow of work. Perfect for immediate application and reinforcing one specific behaviour.',tags:['In the flow of work','Reinforcement','Quick wins']},
+  {id:'standardvideos',cat:'digital',icon:'play',title:'Videos',desc:'Short, engaging visual content. Excellent for demonstrating practical steps, sharing leadership narratives, or quickly explaining a complex concept.',tags:['Demonstration','Storytelling']},
+  {id:'interactivevideos',cat:'digital',icon:'film',title:'Interactive videos',desc:'Video with embedded decision points. Learners observe a behaviour and make choices, bridging the gap between passive viewing and active execution.',tags:['Decision practice','Branching','Engagement']},
+  {id:'webinars',cat:'digital',icon:'cast',title:'Webinars',desc:'Live or recorded online presentations. Effective for scaling knowledge, launching initiatives, or broad capability building across dispersed audiences.',tags:['Scale','Launches','Reach']},
+  {id:'podcasts',cat:'digital',icon:'mic',title:'Audio overviews & podcasts',desc:'Audio-based learning, ideal for storytelling and exploring the why behind a shift. Accessible during downtime or the commute.',tags:['The why','Low friction','On the move']},
+  {id:'jobaids',cat:'digital',icon:'list',title:'Digital job aids',desc:'Checklists, quick-reference guides, and diagrams available at the point of need. They reduce cognitive load so the brain can focus on execution.',tags:['Point of need','Lower cognitive load']},
+  {id:'qrg',cat:'digital',icon:'book',title:'Quick reference guides',desc:'Concise, step-by-step documentation for immediate use on the job. They remove the need to memorise complex processes and cut errors during execution.',tags:['Step-by-step','Error reduction']},
+  {id:'mobile',cat:'digital',icon:'phone',title:'Mobile apps',desc:'Learning delivered straight to a smartphone. Crucial for deskless workers who need performance support and reinforcement in the field.',tags:['Deskless','Field support']},
+  {id:'vilt',cat:'digital',icon:'monitor',title:'Virtual classrooms',desc:'Live, instructor-led sessions online. Most effective for group discussion, guided practice, and clarifying complex execution steps.',tags:['Instructor-led','Guided practice']},
+  {id:'journeys',cat:'digital',icon:'route',title:'Learning journeys',desc:'Structured, multi-modal paths delivered over time. They weave content, practice, and social elements together to build complex capability sustainably.',tags:['Multi-modal','Over time','Capability']},
+  {id:'live',cat:'digital',icon:'users',title:'Live learning',desc:'Synchronous events, virtual or physical, designed for high interactivity, immediate Q&A, and real-time connection among peers.',tags:['Synchronous','Interactive']},
+  {id:'gamified',cat:'digital',icon:'trophy',title:'Gamified learning',desc:'Game mechanics such as points, levels, and badges applied to learning. Drives engagement and repeat practice by making execution rewarding.',tags:['Engagement','Repeat practice']},
+  {id:'adaptive',cat:'digital',icon:'sliders',title:'Adaptive pathways',desc:'Algorithms that adjust the journey based on performance, so learners spend time where they are weak rather than reviewing what they already know.',tags:['Personalised','Efficient']},
+  {id:'lxp',cat:'digital',icon:'layers',title:'Learning experience platform (LXP)',desc:'Learner-driven, recommendation-led platforms used by large organisations, such as LinkedIn Learning, Udemy Business or Degreed. Unlike a traditional LMS, an LXP surfaces just-in-time content based on role, skills and behaviour rather than assigning fixed courses. Its value depends entirely on the inputs: a clear skills taxonomy, well-tagged content, role-based skill mapping, and a balance of algorithmic recommendations with human-curated pathways. Without deliberate inputs, an LXP produces noise, not just-in-time learning.',tags:['Just-in-time','Skills taxonomy','Learner-driven','Needs curation']},
+  {id:'lms',cat:'digital',icon:'monitor',title:'Learning management system (LMS)',desc:'The administrative backbone for delivering, tracking and reporting on assigned learning. Strong for compliance, structured programmes and records of completion. Best paired with an LXP or in-the-flow tools when learners also need self-directed, just-in-time content.',tags:['Compliance','Tracking','Assigned learning']},
+
+  {id:'scenarios',cat:'applied',icon:'target',title:'Scenario-based learning',desc:'Places the learner in a realistic context to solve a problem. It forces application and lets people practise decisions safely.',tags:['Realistic','Safe practice','Decisions']},
+  {id:'branching',cat:'applied',icon:'git',title:'Branching simulations',desc:'Complex scenarios where decisions change the outcome. Builds critical thinking by letting learners feel the consequences of poor execution.',tags:['Consequences','Critical thinking']},
+  {id:'vr',cat:'applied',icon:'cube',title:'AR / VR simulations',desc:'Immersive spatial learning. Builds genuine muscle memory and situational awareness without the cost or risk of real-world failure.',tags:['Immersive','Muscle memory','No real risk']},
+  {id:'roleplay',cat:'applied',icon:'hand',title:'Live roleplays',desc:'Practising conversational or physical skills with peers or actors. Excellent for building confidence in communication, sales, or de-escalation.',tags:['Conversation skills','Confidence']},
+  {id:'ojt',cat:'applied',icon:'briefcase',title:'On-the-job training',desc:'Learning while doing the actual work under supervision. The ultimate execution environment, with immediate, contextual feedback.',tags:['Real work','Contextual feedback']},
+  {id:'hackathons',cat:'applied',icon:'zap',title:'Hackathons',desc:'Intensive, time-boxed collaborative events. Teams apply skills under pressure to solve real business problems, accelerating capability fast.',tags:['Time-boxed','Under pressure','Teamwork']},
+  {id:'action',cat:'applied',icon:'compass',title:'Action learning',desc:'Small groups tackling real, complex problems, taking action and learning as they go. Deeply embeds strategic execution.',tags:['Real problems','Strategic']},
+  {id:'labs',cat:'applied',icon:'flask',title:'Practice labs',desc:'Dedicated environments to experiment, break things, and practise safely before applying skills in live production or real scenarios.',tags:['Experiment','Safe to fail']},
+  {id:'sandbox',cat:'applied',icon:'box',title:'Sandbox',desc:'Isolated environments with dummy data. Crucial for software or systems training, building confidence through trial and error.',tags:['Systems training','Trial and error']},
+  {id:'bootcamps',cat:'applied',icon:'trophy',title:'Tech boot camps',desc:'Intensive, accelerated programmes for rapid skill acquisition, blending deep instruction with immediate hands-on projects.',tags:['Accelerated','Hands-on']},
+
+  {id:'aibots',cat:'ai',icon:'bot',title:'AI roleplay bots',desc:'Practise difficult conversations with an AI avatar. A psychologically safe space to rehearse human skills and get instant, objective feedback.',tags:['Safe rehearsal','Instant feedback']},
+  {id:'aiconvo',cat:'ai',icon:'chat',title:'AI conversation simulations',desc:'Dynamic voice or text scenarios where learners practise coaching, sales, or de-escalation with AI and receive instant behavioural feedback.',tags:['Voice or text','Behavioural feedback']},
+  {id:'copilots',cat:'ai',icon:'copilot',title:'Performance copilots',desc:'AI assistants embedded in the workflow. They give contextual guidance and answers in real time, all but removing the need to memorise process.',tags:['In-workflow','Real time']},
+  {id:'aicoach',cat:'ai',icon:'compass',title:'AI coaching',desc:'Personalised, ongoing feedback generated by AI from a learner\'s performance data. Drives continuous behavioural refinement.',tags:['Personalised','Continuous']},
+  {id:'gensearch',cat:'ai',icon:'search',title:'Generative search',desc:'AI-powered enterprise search that synthesises answers from company documentation, so learners find exact execution steps instantly.',tags:['Synthesised answers','Instant']},
+  {id:'groupagents',cat:'ai',icon:'network',title:'Group learning agents',desc:'AI facilitators inside cohort chats or forums. They prompt discussion, summarise insight, and gently challenge the group\'s thinking.',tags:['Facilitation','Summarising']},
+  {id:'studymode',cat:'ai',icon:'cards',title:'Study guides & study mode',desc:'AI-generated summaries, flashcards, and knowledge checks. Helps learners digest complex information and prime themselves for application.',tags:['Summaries','Knowledge checks']},
+  {id:'personalisation',cat:'ai',icon:'spark',title:'Personalisation agents',desc:'AI that reads a learner\'s role, experience, and performance to curate content dynamically, keeping the experience hyper-relevant.',tags:['Hyper-relevant','Curation']},
+  {id:'socratic',cat:'ai',icon:'brain',title:'Socratic thought partner',desc:'An AI trained to ask probing questions rather than hand over answers, forcing learners to evaluate their own reasoning.',tags:['Probing questions','Reasoning']},
+
+  {id:'cop',cat:'social',icon:'people2',title:'Communities of practice',desc:'Sustained groups of practitioners sharing challenges and solutions. They learn to execute better through peer-to-peer exchange.',tags:['Peer exchange','Sustained']},
+  {id:'mentoring',cat:'social',icon:'handshake',title:'Role & peer mentoring',desc:'Pairing experienced executors with novices. Trust and relationship transfer the nuanced, unwritten skills and cultural norms.',tags:['Trust','Unwritten skills']},
+  {id:'coaching',cat:'social',icon:'message',title:'Coaching',desc:'One-to-one or small-group guidance focused on unlocking potential through targeted feedback, reflection, and accountability.',tags:['Reflection','Accountability']},
+  {id:'cohorts',cat:'social',icon:'cohort',title:'Cohort-based learning',desc:'Groups moving through a programme together. Creates social accountability and peer modelling, lifting completion and application.',tags:['Accountability','Peer modelling']},
+  {id:'forums',cat:'social',icon:'chat',title:'Social forums',desc:'Digital spaces for asynchronous discussion. They crowdsource solutions and normalise new behaviours across dispersed teams.',tags:['Asynchronous','Crowdsourced']},
+  {id:'champions',cat:'social',icon:'star',title:'Champion networks',desc:'Activating peer influencers to model the target behaviour. Champions make a new behaviour feel safe, trusted, and normal.',tags:['Social proof','Modelling']}
+];
+
+const ECO = [
+  {n:1,t:'Target behaviour and skills',d:'Before any tool, get specific about what good looks like. Name the change you want to see across behaviour, skill, capability and confidence:',list:['The specific, observable behaviour to change','The skill or knowledge being built','The level of capability needed, from novice to mastery','The confidence to act under real conditions','Whether this is a skills shift or a cultural one','How you will know the change has happened'],after:'Define the destination first: a clear target makes every later choice about practice, feedback and reinforcement easier.'},
+  {n:2,t:'Current barriers',d:'Look wider than the skill gap. The thing that constrains behaviour and skills improvement can sometimes be outside of the learner\'s control:',list:['A skill or knowledge gap','Low confidence or unclear process','Behaviour, the habits that need to shift','Organisational culture','Internal politics','Behaviour of managers or other team members','Budget constraints','Time pressure and competing priorities','Internal and external pressures'],after:'Map the barriers honestly first: the real constraint decides the method, and sometimes the answer is not training at all.'},
+  {n:3,t:'Practice & feedback',d:'People rarely get it right the first time. Capability and confidence are built through safe repetition and honest feedback, long before the stakes are real:',list:['A safe space to practise the skill or behaviour','Room to make mistakes without real consequences','Repetition that moves novice toward mastery','Timely, specific feedback on what to adjust','Feedback that builds confidence, not just corrects','Increasing challenge as capability grows'],after:'Design the practice loop deliberately: no safe practice and feedback, no real execution.'},
+  {n:4,t:'Reinforcement',d:'A single event rarely takes someone from learning something new to mastery. Reinforcement is what sustains the whole journey, growing the skill, the capability and the confidence over time:',list:['Keeping the new behaviour alive after launch','Moving the skill from novice to mastery','Building capability through repeated practice','Growing confidence with each successful attempt','Job aids and nudges in the flow of work','Support from peers and managers'],after:'Plan reinforcement from the start: without it, a one-off event fades long before it becomes a habit.'}
+];
+
+const SPACES = [
+  {n:1,t:'Secret spaces',d:'Private, individual spaces where learning is self-directed and often done alone. Ideal for foundational knowledge, reflection, and confidential practice.',ex:['An employee uses <strong>AI coaching</strong> to rehearse for a performance review.','A new hire completes a self-paced <strong>online course</strong> on company policy.','A professional listens to an analysis <strong>podcast</strong> on the commute.'],q:'How can we resource secret-space learning without being intrusive?'},
+  {n:2,t:'Group spaces',d:'Collaborative environments where learners build knowledge together. The we space for teamwork, discussion, and social learning.',ex:['A team uses a <strong>Socratic thought partner</strong> in a breakout to deepen analysis.','A cohort runs a face-to-face workshop on a real case study.','Colleagues get <strong>just-in-time AI feedback</strong> on a shared proposal.'],q:'Which group activity could we lift with a collaborative digital tool?'},
+  {n:3,t:'Publishing spaces',d:'Spaces where learners create and share content. The act of creation solidifies understanding and grows a shared knowledge base.',ex:['A manager drafts a reflective post with an <strong>AI writing assistant</strong>.','A team produces a how-to <strong>video</strong> as their assessment.','An employee scripts an audio summary of project learnings with an <strong>AI partner</strong>.'],q:'Where could teams publish their learnings, and on what platform?'},
+  {n:4,t:'Performing spaces',d:'Environments where learners actively demonstrate skills in a practical, observable way.',ex:['A team member enters an <strong>AI roleplay</strong> to handle a tough negotiation.','Staff use <strong>gamified</strong> challenges to spot simulated threats.','A leader rehearses a hard conversation in immersive <strong>VR</strong>.'],q:'What low-cost performing spaces could we create for critical skills?'},
+  {n:5,t:'Participation spaces',d:'Live, synchronous events where the main mode of learning is active involvement and contribution.',ex:['Staff vote in live polls during an all-hands <strong>webinar</strong>.','Employees join a leadership Q&A at the weekly stand-up.','<strong>Smart moderation</strong> keeps a large virtual conference interactive.'],q:'How do we deepen participation beyond simple Q&A?'},
+  {n:6,t:'Data spaces',d:'Spaces focused on interpreting and analysing information. Learning comes from finding insight and making sense of data.',ex:['A team uses <strong>predictive tools</strong> to forecast market trends.','A specialist uses an <strong>AI data coach</strong> to visualise engagement.','Learners review performance dashboards to find improvements.'],q:'What data could we safely turn into a learning activity?'},
+  {n:7,t:'Watching spaces',d:'Environments for passive consumption. Passive, but crucial for dissemination and first exposure to a topic.',ex:['A new hire <strong>watches</strong> a welcome video during onboarding.','An employee catches a recording of a <strong>webinar</strong> they missed.','A learner uses <strong>study mode</strong> to summarise a long video.'],q:'How do we link watching spaces to active learning tasks?'}
+];
+
+const STRUCTS = [
+  {icon:'flag',col:'c-grey',t:'Hackathons',d:'Intensive, time-boxed events. Teams apply skills under pressure on real business problems, accelerating capability and teamwork at once.'},
+  {icon:'people2',col:'c-social',t:'Communities of practice',d:'Structured groups of practitioners who share a discipline. They learn to execute better by trading real-world challenges and solutions.'},
+  {icon:'shield',col:'c-applied',t:'Champion networks',d:'Peer influencers who model the target behaviour. Social proof travels faster than formal training and makes the new normal feel safe.'},
+  {icon:'workflow',col:'c-digital',t:'Workflow integration',d:'Embedding tools, job aids, and microlearning directly into the systems where work happens, so support arrives at the exact point of execution.'},
+  {icon:'briefcase',col:'c-applied',t:'Workplace learning',d:'Learning that happens on the job and in the flow of work. Real tasks, supervised practice, and learning by doing turn the workplace itself into the most authentic learning environment.'}
+];
+
+/* ---------- Render: toolkit ---------- */
+const grid=document.getElementById('grid');
+const countEl=document.getElementById('count');
+let activeCat='all', query='';
+
+function cardHTML(t){
+  const c=CATS[t.cat];
+  const ai = t.cat==='ai' ? '<span class="ai-flag">'+svg('spark').replace('1.7','2')+'AI</span>' : '';
+  return '<button class="tool '+c.cls+'" data-id="'+t.id+'">'+
+    '<span class="ic" aria-hidden="true">'+svg(t.icon)+'</span>'+
+    '<h5>'+t.title+'</h5>'+
+    '<p class="blurb">'+t.desc+'</p>'+
+    '<span class="foot"><span class="cat-pill">'+c.label.split(' ')[0]+'</span>'+ai+'</span>'+
+  '</button>';
+}
+function renderGrid(){
+  const q=query.trim().toLowerCase();
+  const list=TOOLS.filter(t=>{
+    const okCat=activeCat==='all'||t.cat===activeCat;
+    const okQ=!q||(t.title+' '+t.desc+' '+t.tags.join(' ')).toLowerCase().includes(q);
+    return okCat&&okQ;
+  });
+  countEl.textContent=list.length+' of '+TOOLS.length;
+  if(!list.length){
+    grid.innerHTML='<div class="empty">'+svg('search')+'<b>Nothing matches that</b>Try a different word, or clear the filter.</div>';
+    return;
+  }
+  grid.innerHTML=list.map(cardHTML).join('');
+}
+grid.addEventListener('click',e=>{const b=e.target.closest('.tool');if(b)openModal(b.dataset.id);});
+document.getElementById('q').addEventListener('input',e=>{query=e.target.value;renderGrid();});
+document.getElementById('filters').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  activeCat=c.dataset.cat;
+  document.querySelectorAll('#filters .chip').forEach(x=>x.setAttribute('aria-pressed',x===c));
+  renderGrid();
+});
+renderGrid();
+
+/* ---------- Render: ecosystem accordion ---------- */
+document.getElementById('ecoAcc').innerHTML=ECO.map(s=>{
+  let inner='<p>'+s.d+'</p>';
+  if(s.list)inner+='<ul class="ecolist">'+s.list.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  if(s.after)inner+='<p>'+s.after+'</p>';
+  return '<div class="step"><button aria-expanded="false">'+
+  '<span class="num">'+s.n+'</span>'+s.t+
+  '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>'+
+  '</button><div class="body">'+inner+'</div></div>';
+}).join('');
+
+/* ---------- Render: spaces ---------- */
+document.getElementById('spacesGrid').innerHTML=SPACES.map(s=>(
+  '<div class="space"><button aria-expanded="false">'+
+  '<span class="sn">'+s.n+'</span><h5>'+s.t+'</h5>'+
+  '<svg class="schev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>'+
+  '</button><div class="sbody"><div class="sinner">'+
+  '<p class="desc">'+s.d+'</p>'+
+  '<p class="exlbl">In practice</p><ul>'+
+  s.ex.map(x=>'<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>'+x+'</span></li>').join('')+
+  '</ul><div class="ask"><span>Design prompt</span>'+s.q+'</div>'+
+  '</div></div></div>'
+)).join('');
+
+/* ---------- Render: structures ---------- */
+document.getElementById('structGrid').innerHTML=STRUCTS.map(s=>(
+  '<div class="struct '+s.col+'"><span class="ic" aria-hidden="true">'+svg(s.icon)+'</span>'+
+  '<h5>'+s.t+'</h5><p>'+s.d+'</p></div>'
+)).join('');
+
+/* ---------- Accordion behaviour ---------- */
+function wireAccordion(scope,btnSel,stepSel,bodySel){
+  scope.querySelectorAll(btnSel).forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const step=btn.closest(stepSel);
+      const body=step.querySelector(bodySel);
+      const open=step.classList.contains('open');
+      scope.querySelectorAll(stepSel).forEach(s=>{
+        s.classList.remove('open');
+        s.querySelector(btnSel).setAttribute('aria-expanded','false');
+        s.querySelector(bodySel).style.maxHeight=null;
+      });
+      if(!open){
+        step.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+        body.style.maxHeight=body.scrollHeight+'px';
+      }
+    });
+  });
+}
+wireAccordion(document.getElementById('ecoAcc'),'button','.step','.body');
+wireAccordion(document.getElementById('spacesGrid'),'button','.space','.sbody');
+
+/* ---------- Tabs ---------- */
+function goTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===name));
+  document.querySelectorAll('.step-card').forEach(s=>{if(s.dataset.goto===name){s.setAttribute('aria-current','true');}else{s.removeAttribute('aria-current');}});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-goto]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goTab(a.dataset.goto);}));
+
+/* ---------- Subtabs ---------- */
+document.querySelector('.subtabs').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('.subtabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('.subpane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.sub));
+});
+
+/* ---------- Modal ---------- */
+const modal=document.getElementById('modal');
+let lastFocus=null;
+function openModal(id){
+  const t=TOOLS.find(x=>x.id===id);if(!t)return;
+  const c=CATS[t.cat];
+  lastFocus=document.activeElement;
+  document.getElementById('mTop').style.background={digital:'#d2f0f0',applied:'#e72582',ai:'#00bec7',social:'#1f2a52'}[t.cat];
+  const mic=document.getElementById('mIc');
+  mic.className='mic '+c.cls;mic.innerHTML=svg(t.icon);
+  document.getElementById('mTitle').textContent=t.title;
+  document.getElementById('mCat').textContent=c.label;
+  document.getElementById('mDesc').textContent=t.desc;
+  document.getElementById('mTags').innerHTML=t.tags.map(x=>'<span class="mtag">'+x+'</span>').join('');
+  modal.classList.add('on');
+  document.getElementById('mClose').focus();
+}
+function closeModal(){modal.classList.remove('on');if(lastFocus)lastFocus.focus();}
+document.getElementById('mClose').addEventListener('click',closeModal);
+document.getElementById('mGot').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('on'))closeModal();});
+</script>
 </body>
 </html>
